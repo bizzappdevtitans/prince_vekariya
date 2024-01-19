@@ -14,9 +14,6 @@ class CourseDetails(models.Model):
     first_name = fields.Char(string="First Name", related="teacher_id.first_name")
     reference = fields.Char(string="Reference")
     description = fields.Html(string="Description")
-    teacher_count = fields.Integer(
-        string="Teacher Count",
-    )
 
     priority = fields.Selection(
         [
@@ -27,7 +24,8 @@ class CourseDetails(models.Model):
         ],
         string="Priority",
     )
-    status = fields.Selection(
+
+    state = fields.Selection(
         [
             ("draft", "Draft"),
             ("in_process", "In Process"),
@@ -45,3 +43,25 @@ class CourseDetails(models.Model):
 
     def object_button(self):
         print("Button clicked")
+
+    def action_in_process(self):
+        for rec in self:
+            rec.state = "in_process"
+
+    def action_draft(self):
+        for rec in self:
+            rec.state = "draft"
+
+    def action_done(self):
+        for rec in self:
+            rec.state = "done"
+
+    def action_cancle(self):
+        for rec in self:
+            rec.state = "cancle"
+
+
+class SubjectDetails(models.Model):
+    _name = "subject.detail"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
+    _description = "Subject Details"

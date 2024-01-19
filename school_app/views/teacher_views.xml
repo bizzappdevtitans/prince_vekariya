@@ -30,16 +30,18 @@
                             </div>
                         </button>
                     </div>
+                    <field name="image" widget="image" class="oe_avatar"/>
                     <group>
                         <group>
                             <field name="first_name"/>
                             <field name="age"/>
                             <field name="gender"/>
-                            <field name="birth_date"/>
+
                         </group>
                         <group>
                             <field name="name"/>
                             <field name="address"/>
+                            <field name="birth_date"/>
                             <field name="active" invisible="1"/>
                         </group>
                     </group>

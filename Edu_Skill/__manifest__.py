@@ -1,6 +1,6 @@
 {
-    "name": "school_app",
-    "summary": """Basic School App""",
+    "name": "edu_skill",
+    "summary": """Provide online Education""",
     "description": """
     """,
     "author": "bizzappdev",
@@ -11,14 +11,10 @@
     "data": [
         "security/ir.model.access.csv",
         "views/teacher_menu_views.xml",
-        "views/teacher_views.xml",
-        "views/course_view.xml",
-        "wizard/cancel_course.xml"
+        "views/teacher_details_views.xml",
+        # "views/course_view.xml",
+        # "wizard/cancel_course.xml"
     ],
-    # only loaded in demonstration mode
-    # "demo": [
-    #     "demo/demo.xml",
-    # ],
     "application": True,
     "license": "LGPL-3",
 }
