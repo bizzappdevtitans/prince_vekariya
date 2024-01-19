@@ -1,5 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-school_app.access_teacher_detail,access_teacher_detail,school_app.model_teacher_detail,base.group_user,1,1,1,1
-school_app.access_course_detail,access_course_detail,school_app.model_course_detail,base.group_user,1,1,1,1
-school_app.access_subject_detail,access_subject_detail,school_app.model_subject_detail,base.group_user,1,1,1,1
-school_app.access_cancle_course_wizard,access_cancle_course_wizard,school_app.model_cancle_course_wizard,base.group_user,1,1,1,1
