@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <record id="view_course_tree" model="ir.ui.view">
+        <field name="name">category.detail.tree</field>
+        <field name="model">category.detail</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="state == 'done'" decoration-info="state == 'draft'" decoration-danger = "state == 'cancle'" decoration-warning="state == 'in_process'">
+                <field name="category_name" />
+                <field name="activity_ids" widget="list_activity" optional="show"/>
+                <field name="state" decoration-success="state == 'done'" decoration-info="state == 'draft'" decoration-danger = "state == 'cancle'" decoration-warning="state == 'in_process'" widget="badge"/>
+            </tree>
+        </field>
+    </record>
+    <record id="category_view_form" model="ir.ui.view">
+        <field name="name">category.detail.form</field>
+        <field name="model">category.detail</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="category_image" widget="image" class="oe_avatar"/>
+                    <group>
+                        <group>
+                            <field name="category_name"/>
+                        </group>
+                        <group>
+                            <field name="category_upload_date"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_category_detail" model="ir.actions.act_window">
+        <field name="name">Category</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">category.detail</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No Category Found
+                ...</p>
+        </field>
+    </record>
+
+</odoo>

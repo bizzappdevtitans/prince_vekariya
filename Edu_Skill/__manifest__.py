@@ -10,10 +10,11 @@
     "depends": ["base", "mail"],
     "data": [
         "security/ir.model.access.csv",
-        "views/teacher_menu_views.xml",
         "views/teacher_details_views.xml",
-        # "views/course_view.xml",
-        # "wizard/cancel_course.xml"
+        "views/teacher_menu_views.xml",
+        "views/category_details_views.xml",
+        "views/course_view.xml",
+        "views/category_details_views.xml",
     ],
     "application": True,
     "license": "LGPL-3",

@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-    <menuitem id="menu_teacher_root" name="Teacher" web_icon="Edu_Skill,static/description/icon.png" action="action_teacher_detail" sequence="0"/>
-    <!-- <menuitem  id="menu_teacher_details" name="Teacher Details" parent="menu_teacher_root"  action="action_teacher_detail" sequence="20"/> -->
-    <!-- <menuitem  id="menu_course" name="Teacher Course" parent="menu_teacher_root" action="action_course_detail" sequence="100"/> -->
+    <menuitem id="menu_teacher_root" name="Teacher" web_icon="Edu_Skill/static/description/icon.png" action="action_teacher_detail" sequence="0"/>
+    <menuitem id="menu_teacher" name="Teacher Details" parent="menu_teacher_root" action="action_teacher_detail" />
 
-    <!-- <menuitem  id="menu_cancle_course" name="Cancle" parent="menu_course" action="action_cancle_course" sequence="20"/> -->
+    <menuitem id="menu_category" name="Category" parent="menu_teacher_root" action="action_category_detail" />
+
+    <menuitem  id="menu_course" name="Course Details" parent="menu_teacher_root" action="action_course_detail"/>
+
+    <!-- <menuitem  id="menu_student" name="Student Details" parent="menu_teacher_root" action="action_student_detail"/> -->
+
 
 </odoo>

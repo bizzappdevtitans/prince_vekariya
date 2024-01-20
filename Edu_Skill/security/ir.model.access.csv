@@ -1,3 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 Edu_Skill.access_teacher_detail,access_teacher_detail,Edu_Skill.model_teacher_detail,base.group_user,1,1,1,1
 Edu_Skill.access_course_detail,access_course_detail,Edu_Skill.model_course_detail,base.group_user,1,1,1,1
+Edu_Skill.access_category_detail,access_category_detail,Edu_Skill.model_category_detail,base.group_user,1,1,1,1

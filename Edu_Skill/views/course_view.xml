@@ -7,6 +7,8 @@
             <tree decoration-success="state == 'done'" decoration-info="state == 'draft'" decoration-danger = "state == 'cancle'" decoration-warning="state == 'in_process'">
                 <field name="teacher_id" />
                 <field name="course_name"/>
+                <field name="category_id"/>
+                <field name="price"/>
                 <field name="activity_ids" widget="list_activity" optional="show"/>
                 <field name="state" decoration-success="state == 'done'" decoration-info="state == 'draft'" decoration-danger = "state == 'cancle'" decoration-warning="state == 'in_process'" widget="badge"/>
             </tree>
@@ -29,33 +31,32 @@
         <field name="model">course.detail</field>
         <field name="arch" type="xml">
             <form>
-                <header>
-                    <button name="action_draft" string="Draft" type="object" states="cancle" />
+                <!-- <header> -->
+                   <!--  <button name="action_draft" string="Draft" type="object" states="cancle" />
                     <button name="action_in_process" string="In Process" type="object" states="draft"/>
                     <button name="action_cancle" string="Cancle" type="object" states="draft,in_process" />
                     <button name="action_done" string="Mark As Done" type="object" states="in_proess"/>
                     <field name="state" widget="statusbar" nolabel="1" status_visible="draft,in_proess,done,cancle"/>
-                </header>
+                </header> -->
                 <sheet>
-                    <div class="oe_title">
-                        <h1>
-                            <field name="priority" widget="priority" class="mr-3" />
-                        </h1>
-                    </div>
+
+                    <field name="image" widget="image" class="oe_avatar"/>
                     <group>
-                        <field name="teacher_id"/>
-                        <field name="course_upload_date"/>
-                        <field name="first_name"/>
-                        <field name="course_name"/>
+                        <group>
+                            <field name="teacher_id"/>
+                            <field name="category_id"/>
+                            <field name="course_upload_date"/>
+                            <field name="level"/>
+                            <field name="state"/>
 
+                        </group>
+                        <group>
+                            <field name="teacher_first_name"/>
+                            <field name="course_name"/>
+                            <field name="reference"/>
+                            <field name="language"/>
 
-
-
-                        <!-- create Button with Action Type -->
-                        <button name="%(school_app.action_course_detail)d" string="Cencle" confirm="Are You Sure To Cencle ?" type="action" class="oe_highlight"/>
-
-                        <!-- create  a button with object Type -->
-                         <button name="object_button" string="Object Button" class="oe_highlight" type="object"/>
+                        </group>
                     </group>
                     <notebook>
                         <page string="Description" name="description">
