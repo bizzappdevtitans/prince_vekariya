@@ -18,10 +18,20 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <!-- Create a smart buttton -->
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_course" type="object" class="oe_stat_button" icon="fa-book">
+                            <div class="o_stat_info">
+                                <field name="course_count" class="oe_stat_value" />
+                                <span class="o_stat_text">Course</span>
+                            </div>
+                        </button>
+                    </div>
                     <field name="category_image" widget="image" class="oe_avatar"/>
                     <group>
                         <group>
                             <field name="category_name"/>
+                            <field name="state"/>
                         </group>
                         <group>
                             <field name="category_upload_date"/>
@@ -45,4 +55,17 @@
         </field>
     </record>
 
+    <record id="view_category_search" model="ir.ui.view">
+        <field name="name">category.detail.search</field>
+        <field name="model">category.detail</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="category_name"/>
+                <filter name="filter_category" string="Category" domain="[('category_name', '=','category_name')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Category Name" name="category_name" context="{'group_by':'category_name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
 </odoo>

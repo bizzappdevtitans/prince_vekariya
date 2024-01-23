@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+
+
     <record id="view_course_tree" model="ir.ui.view">
         <field name="name">course.detail.tree</field>
         <field name="model">course.detail</field>
@@ -31,15 +33,23 @@
         <field name="model">course.detail</field>
         <field name="arch" type="xml">
             <form>
-                <!-- <header> -->
-                   <!--  <button name="action_draft" string="Draft" type="object" states="cancle" />
+                <header>
+                   <button name="action_draft" string="Draft" type="object" states="cancle" />
                     <button name="action_in_process" string="In Process" type="object" states="draft"/>
                     <button name="action_cancle" string="Cancle" type="object" states="draft,in_process" />
                     <button name="action_done" string="Mark As Done" type="object" states="in_proess"/>
                     <field name="state" widget="statusbar" nolabel="1" status_visible="draft,in_proess,done,cancle"/>
-                </header> -->
+                </header>
                 <sheet>
-
+                    <!-- Create a smart buttton -->
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_course" type="object" class="oe_stat_button" icon="fa-book">
+                            <div class="o_stat_info">
+                                <field name="video_count" class="oe_stat_value" />
+                                <span class="o_stat_text">Video</span>
+                            </div>
+                        </button>
+                    </div>
                     <field name="image" widget="image" class="oe_avatar"/>
                     <group>
                         <group>
@@ -47,15 +57,13 @@
                             <field name="category_id"/>
                             <field name="course_upload_date"/>
                             <field name="level"/>
-                            <field name="state"/>
-
+                            <field name="price"/>
                         </group>
                         <group>
-                            <field name="teacher_first_name"/>
+                            <field name="teacher_last_name" />
                             <field name="course_name"/>
-                            <field name="reference"/>
                             <field name="language"/>
-
+                            <field name="state"/>
                         </group>
                     </group>
                     <notebook>
@@ -70,6 +78,30 @@
                     <field name="message_ids"/>
                 </div>
             </form>
+        </field>
+    </record>
+
+    <record id="view_course_search" model="ir.ui.view">
+        <field name="name">course.detail.search</field>
+        <field name="model">course.detail</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="course_name"  />
+                <field name="teacher_id"/>
+                <field name="category_id"/>
+                <filter name="filter_category" string="Category" domain="[('category_id', '=','Web Devlopment')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Category" name="group_by_category" context="{'group_by':'category_id'}"/>
+
+                    <filter string="Course Name" name="group_by_course_name" context="{'group_by':'course_name'}"/>
+
+                    <filter string="Teacher Name" name="group_by_teacher_name" context="{'group_by':'teacher_id'}"/>
+                </group>
+                <searchpanel>
+                    <field name="category_id" icon="fa-users" select="multi" enable_counters="1"/>
+                </searchpanel> -->
+            </search>
         </field>
     </record>
 </odoo>

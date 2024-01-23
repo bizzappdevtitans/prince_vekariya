@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 from datetime import date
 
 
@@ -20,7 +21,10 @@ class TeacherDetail(models.Model):
         required=True,
         size=16,
     )
-    age = fields.Integer(string="Age :", compute="_compute_age")
+    age = fields.Integer(
+        string="Age :",
+        compute="_compute_age",
+    )
     address = fields.Text(string="Address :", required=True)
     gender = fields.Selection(
         [("Male", "Male"), ("Female", "Female")], string="Gender", required=True
@@ -65,3 +69,15 @@ class TeacherDetail(models.Model):
             "target": "current",
             "type": "ir.actions.act_window",
         }
+
+    @api.constrains("first_name", "last_name")
+    def _check_name(self):
+        for record in self:
+            if record.first_name == record.last_name:
+                raise ValidationError("First Name and Last Name must be different")
+
+    _sql_constraints = [("email_uniqe", "unique(email)", "Email must be unique.")]
+
+    _sql_constraints = [
+        ("phone_number_uniqe", "unique(phone_number)", "Phone Number must be unique.")
+    ]

@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class CourseDetails(models.Model):
@@ -7,13 +8,13 @@ class CourseDetails(models.Model):
     _description = "Course Detail"
     _rec_name = "course_name"
 
-    teacher_id = fields.Many2one("teacher.detail", ondelete="cascade", string="Teacher")
+    teacher_id = fields.Many2one(
+        "teacher.detail", ondelete="cascade", string="Teacher", required=True
+    )
     category_id = fields.Many2one(
-        "category.detail", ondelete="cascade", string="Category"
+        "category.detail", ondelete="cascade", string="Category", required=True
     )
-    teacher_first_name = fields.Char(
-        string="First Name", related="teacher_id.first_name"
-    )
+    teacher_last_name = fields.Char(string="First Name", related="teacher_id.last_name")
     course_name = fields.Char(string="Course Name", required=True)
     course_upload_date = fields.Date(string="Upload Date", default=fields.Datetime.now)
     reference = fields.Char(string="Reference")
@@ -25,6 +26,7 @@ class CourseDetails(models.Model):
             ("intermediate", "Intermediate"),
         ],
         string="Level",
+        required=True,
     )
 
     language = fields.Selection(
@@ -32,6 +34,7 @@ class CourseDetails(models.Model):
             ("english", "English"),
         ],
         string="Language",
+        required=True,
     )
 
     state = fields.Selection(
@@ -45,9 +48,12 @@ class CourseDetails(models.Model):
         default="draft",
         required=True,
     )
-
-    price = fields.Integer("Price", null=False)
-    image = fields.Image(string="Course Image")
+    video_count = fields.Integer(string="Video Count", compute="_compute_video_count")
+    price = fields.Integer(
+        "Price",
+        null=False,
+    )
+    image = fields.Image(string="Course Image", required=True)
 
     @api.onchange("teacher_id")
     def onchange_teacher_id(self):
@@ -68,3 +74,25 @@ class CourseDetails(models.Model):
     def action_cancle(self):
         for rec in self:
             rec.state = "cancle"
+
+    def _compute_video_count(self):
+        for res in self:
+            video_count = self.env["video.detail"].search_count(
+                [("course_id", "=", res.id)]
+            )
+            res.video_count = video_count
+
+    def action_open_course(self):
+        return {
+            "name": "Video",
+            "res_model": "video.detail",
+            "view_mode": "list,form",
+            "context": {},
+            "domain": [("course_id", "=", self.id)],
+            "target": "current",
+            "type": "ir.actions.act_window",
+        }
+
+    _sql_constraints = [
+        ("course_name_uniqe", "unique(course_name)", "Course Name must be unique.")
+    ]
