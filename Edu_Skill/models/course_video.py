@@ -5,7 +5,7 @@ class VideoDetails(models.Model):
     _name = "video.detail"
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Video Detail"
-    _rec_name = "video_caption"
+    _rec_name = "course_id"
 
     course_id = fields.Many2one("course.detail", ondelete="cascade", string="Course")
     series_number = fields.Integer(string="Series Number", null=False)

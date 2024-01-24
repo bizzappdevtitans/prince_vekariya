@@ -14,7 +14,7 @@ class CourseDetails(models.Model):
     category_id = fields.Many2one(
         "category.detail", ondelete="cascade", string="Category", required=True
     )
-    teacher_last_name = fields.Char(string="First Name", related="teacher_id.last_name")
+    teacher_last_name = fields.Char(string="Last Name", related="teacher_id.last_name")
     course_name = fields.Char(string="Course Name", required=True)
     course_upload_date = fields.Date(string="Upload Date", default=fields.Datetime.now)
     reference = fields.Char(string="Reference")
@@ -83,15 +83,34 @@ class CourseDetails(models.Model):
             res.video_count = video_count
 
     def action_open_course(self):
-        return {
-            "name": "Video",
-            "res_model": "video.detail",
-            "view_mode": "list,form",
-            "context": {},
-            "domain": [("course_id", "=", self.id)],
-            "target": "current",
-            "type": "ir.actions.act_window",
+        # return {
+        #     "name": "Video",
+        #     "res_model": "video.detail",
+        #     "view_mode": "list,form",
+        #     "context": {},
+        #     "domain": [("course_id", "=", self.id)],
+        #     "target": "current",
+        #     "type": "ir.actions.act_window",
+        # }
+        action = {
+            'name': 'video',
+            'type': 'ir.actions.act_window',
+            'res_model': 'video.detail',
+            'target': 'current',
         }
+        for res in self:
+            video_count = self.env["video.detail"].search_count(
+                [("course_id", "=", res.id)]
+            )
+            res.video_count = int(video_count)
+
+        if res.video_count == 1:
+            action['domain'] = [('course_id', '=', self.id)]
+            action['view_mode'] = 'form'
+        else:
+            action['view_mode'] = 'tree,form'
+            action['domain'] = [('course_id', '=', self.id)]
+        return action
 
     _sql_constraints = [
         ("course_name_uniqe", "unique(course_name)", "Course Name must be unique.")

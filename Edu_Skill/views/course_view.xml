@@ -28,18 +28,11 @@
         </field>
     </record>
 
-    <record id="cours_view_form" model="ir.ui.view">
+    <record id="course_view_form" model="ir.ui.view">
         <field name="name">course.detail.form</field>
         <field name="model">course.detail</field>
         <field name="arch" type="xml">
             <form>
-                <header>
-                   <button name="action_draft" string="Draft" type="object" states="cancle" />
-                    <button name="action_in_process" string="In Process" type="object" states="draft"/>
-                    <button name="action_cancle" string="Cancle" type="object" states="draft,in_process" />
-                    <button name="action_done" string="Mark As Done" type="object" states="in_proess"/>
-                    <field name="state" widget="statusbar" nolabel="1" status_visible="draft,in_proess,done,cancle"/>
-                </header>
                 <sheet>
                     <!-- Create a smart buttton -->
                     <div class="oe_button_box" name="button_box">

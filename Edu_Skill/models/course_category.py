@@ -29,7 +29,7 @@ class CategoryDetails(models.Model):
         [
             ("draft", "Draft"),
             ("in_process", "In Process"),
-            ("cancle", "cancle"),
+            ("cancle", "Cancle"),
             ("done", "Done"),
         ],
         string="Status",

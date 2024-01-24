@@ -3,3 +3,7 @@ from . import course_details
 from . import course_category
 from . import user_details
 from . import course_video
+from . import course_order
+from . import order_course_item
+from . import quiz_question
+from . import quiz_result

@@ -4,3 +4,7 @@ Edu_Skill.access_course_detail,access_course_detail,Edu_Skill.model_course_detai
 Edu_Skill.access_category_detail,access_category_detail,Edu_Skill.model_category_detail,base.group_user,1,1,1,1
 Edu_Skill.access_user_detail,access_user_detail,Edu_Skill.model_user_detail,base.group_user,1,1,1,1
 Edu_Skill.access_video_detail,access_video_detail,Edu_Skill.model_video_detail,base.group_user,1,1,1,1
+Edu_Skill.access_order_detail,access_order_detail,Edu_Skill.model_order_detail,base.group_user,1,1,1,1
+Edu_Skill.access_course_item_order_detail,access_course_item_order_detail,Edu_Skill.model_course_item_order_detail,base.group_user,1,1,1,1
+Edu_Skill.access_quiz_detail,access_quiz_detail,Edu_Skill.model_quiz_detail,base.group_user,1,1,1,1
+Edu_Skill.access_quiz_result,access_quiz_result,Edu_Skill.model_quiz_result,base.group_user,1,1,1,1
