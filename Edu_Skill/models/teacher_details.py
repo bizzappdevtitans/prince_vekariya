@@ -60,15 +60,29 @@ class TeacherDetail(models.Model):
             res.course_count = course_count
 
     def action_open_course(self):
-        return {
-            "name": "Course",
-            "res_model": "course.detail",
-            "view_mode": "list,form",
-            "context": {},
-            "domain": [("teacher_id", "=", self.id)],
-            "target": "current",
-            "type": "ir.actions.act_window",
-        }
+        if self.course_count == 1:
+            return {
+                "type": "ir.actions.act_window",
+                "name": "Course",
+                "res_model": "course.detail",
+                "res_id": int(
+                    self.env["course.detail"].search([("teacher_id", "=", self.id)])
+                ),
+                "domain": [("teacher_id", "=", self.id)],
+                "view_mode": "form",
+                "view_type": "form",
+                "target": "current",
+            }
+        else:
+            return {
+                "name": "Course",
+                "res_model": "course.detail",
+                "view_mode": "list,form",
+                "context": {},
+                "domain": [("teacher_id", "=", self.id)],
+                "target": "current",
+                "type": "ir.actions.act_window",
+            }
 
     @api.constrains("first_name", "last_name")
     def _check_name(self):

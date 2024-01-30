@@ -12,7 +12,6 @@ class CourseOrderItem(models.Model):
         ondelete="cascade",
         string="Order Id",
         required=True,
-
     )
     user_first_name = fields.Char(
         related="order_id.first_name", readonly=True, required=True
@@ -25,6 +24,5 @@ class CourseOrderItem(models.Model):
         ondelete="cascade",
         string="Course Name",
         required=True,
-
     )
     price = fields.Float(string="Price : ")

@@ -9,7 +9,7 @@ class QuizQuestion(models.Model):
     video_caption = "course_name"
 
     course_video_id = fields.Many2one(
-        "video.detail", ondelete="cascade", string="Video Caption"
+        "course.detail", ondelete="cascade", string="Video Caption"
     )
 
     question = fields.Char(string="Question", required=True)
@@ -24,14 +24,15 @@ class QuizQuestion(models.Model):
     )
     verified = fields.Boolean(string="verified", default=False)
 
-    # @api.constrains("first_name", "last_name")
-    # def _check_name(self):
-    #     for record in self:
-    #         if (
-    #             record.option_1 == record.option_2
-    #             or record.option_1 == record.option_3
-    #             or record.option_1 == record.option_4
-    #             or record.option_2 == record.option_3
-    #             or record.option_2 == record.option_4
-    #             or record.option_3 == record.option_4
-    #         ):"Option must be different"))
+    @api.constrains("option_1", "option_2", "option_3", "option_4")
+    def _check_option(self):
+        for record in self:
+            if (
+                record.option_1 == record.option_2
+                or record.option_1 == record.option_3
+                or record.option_1 == record.option_4
+                or record.option_2 == record.option_3
+                or record.option_2 == record.option_4
+                or record.option_3 == record.option_4
+            ):
+                "Option must be different"

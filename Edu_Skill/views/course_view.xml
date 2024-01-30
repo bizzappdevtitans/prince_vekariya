@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-
-
-    <record id="view_course_tree" model="ir.ui.view">
+    <record id="view_course_tree" model="ir.ui.view"> <!-- Creating Tree View -->
         <field name="name">course.detail.tree</field>
         <field name="model">course.detail</field>
         <field name="arch" type="xml">
@@ -27,7 +25,7 @@
                 ...</p>
         </field>
     </record>
-
+    <!-- Creating A Form View -->
     <record id="course_view_form" model="ir.ui.view">
         <field name="name">course.detail.form</field>
         <field name="model">course.detail</field>
@@ -36,7 +34,7 @@
                 <sheet>
                     <!-- Create a smart buttton -->
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_open_course" type="object" class="oe_stat_button" icon="fa-book">
+                        <button name="action_open_course" type="object" class="oe_stat_button" icon="fa-book" attrs="{'invisible': [('video_count', '=', 0)]}">
                             <div class="o_stat_info">
                                 <field name="video_count" class="oe_stat_value" />
                                 <span class="o_stat_text">Video</span>
@@ -93,7 +91,7 @@
                 </group>
                 <searchpanel>
                     <field name="category_id" icon="fa-users" select="multi" enable_counters="1"/>
-                </searchpanel> -->
+                </searchpanel>
             </search>
         </field>
     </record>
