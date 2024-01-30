@@ -7,8 +7,8 @@ class QuizResult(models.Model):
     _description = "Quiz Detail"
     video_caption = "video_caption"
 
-    video_id = fields.Many2one(
-        "video.detail", ondelete="cascade", string="Video Caption"
+    course_id = fields.Many2one(
+        "course.detail", ondelete="cascade", string="Video Caption"
     )
 
     user_id = fields.Many2one(
@@ -17,10 +17,10 @@ class QuizResult(models.Model):
     user_last_name = fields.Char(string="Last Name", related="user_id.last_name")
     total_right_answer = fields.Integer(string="Total Right Answer")
     total_wrong_answer = fields.Integer(string="Total Wrong Answer")
-    user_input = fields.Char(string="User Input")
-    right_answer = fields.Char(string="Answer", required=True)
-    teacher_id = fields.Many2one(
-        "teacher.detail", ondelete="cascade", string="Teacher", required=True
+    question = fields.Many2one(
+        "quiz.detail", string="Question", ondelete="cascade", required=True
     )
+    user_input = fields.Char(string="User Input")
+    right_answer = fields.Char(string="Answer")
     percentge = fields.Float("percentge", default=0.0)
     verified = fields.Boolean(string="verified", default=False)

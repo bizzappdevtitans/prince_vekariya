@@ -55,10 +55,11 @@ class CourseDetails(models.Model):
     )
     image = fields.Image(string="Course Image", required=True)
 
-    @api.onchange("teacher_id")
+    @api.onchange("teacher_id")  # using Onchange Function Get Teacher First Name
     def onchange_teacher_id(self):
         self.reference = self.teacher_id.first_name
 
+    # Action For Mode Of Course
     def action_in_process(self):
         for rec in self:
             rec.state = "in_process"
@@ -76,7 +77,7 @@ class CourseDetails(models.Model):
             rec.state = "cancle"
 
     def _compute_video_count(self):
-        for res in self:
+        for res in self:  # Count Number Of Video In video.detail
             video_count = self.env["video.detail"].search_count(
                 [("course_id", "=", res.id)]
             )

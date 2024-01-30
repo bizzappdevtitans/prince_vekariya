@@ -20,14 +20,13 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="video_id"/>
+                            <field name="course_id"/>
                             <field name="user_id"/>
                             <field name="total_right_answer"/>
                             <field name="user_input"/>
                             <field name="percentge"/>
                         </group>
                         <group>
-                            <field name="teacher_id"/>
                             <field name="user_last_name"/>
                             <field name="total_wrong_answer"/>
                             <field name="right_answer"/>

@@ -41,7 +41,13 @@ class CourseOrder(models.Model):
         default=id,
         readonly=True,
     )
-    admin_note = fields.Char(string="Admin Note : ")
+    reference_no = fields.Char(
+        string="Course Order Reference",
+        required=True,
+        readonly=True,
+        default=lambda self: _("New"),
+    )
+    admin_note = fields.Text(string="Admin Note : ")
 
     @api.constrains("first_name", "last_name")
     def _check_name(self):
@@ -49,10 +55,22 @@ class CourseOrder(models.Model):
             if record.first_name == record.last_name:
                 raise ValidationError("First Name and Last Name must be different")
 
+    # Condition Check For Uniq Payment Id
     _sql_constraints = [
         ("payment_id_uniqe", "unique(payment_id)", "Payment id  must be unique.")
     ]
 
+    # Condition Check For Uniq Order Id
     _sql_constraints = [
         ("order_id_uniqe", "unique(order_id)", "Order id must be unique.")
     ]
+
+    # Generate Sequence
+    @api.model
+    def create(self, vals):
+        if vals.get("reference_no", _("New")) == _("New"):
+            vals["reference_no"] = self.env["ir.sequence"].next_by_code(
+                "order.detail"
+            ) or _("New")
+        res = super(CourseOrder, self).create(vals)
+        return res

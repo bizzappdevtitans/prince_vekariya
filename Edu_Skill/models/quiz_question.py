@@ -8,22 +8,19 @@ class QuizQuestion(models.Model):
     _description = "Quiz Detail"
     video_caption = "course_name"
 
-    course_video_id = fields.Many2one(
-        "course.detail", ondelete="cascade", string="Video Caption"
+    course_id = fields.Many2one(
+        "course.detail", ondelete="cascade", string="Course Name"
     )
-
+    teacher_id = fields.Many2one(string="Teacher Name", related="course_id.teacher_id")
     question = fields.Char(string="Question", required=True)
     option_1 = fields.Char(string="Option 1", required=True)
     option_2 = fields.Char(string="Option 2", required=True)
     option_3 = fields.Char(string="Option 3")
     option_4 = fields.Char(string="Option 4")
-    user_input = fields.Char(string="User Input")
     right_answer = fields.Char(string="Answer", required=True)
-    teacher_id = fields.Many2one(
-        "teacher.detail", ondelete="cascade", string="Teacher", required=True
-    )
     verified = fields.Boolean(string="verified", default=False)
 
+    # Condition Check For Option Can Be Different
     @api.constrains("option_1", "option_2", "option_3", "option_4")
     def _check_option(self):
         for record in self:
@@ -35,4 +32,4 @@ class QuizQuestion(models.Model):
                 or record.option_2 == record.option_4
                 or record.option_3 == record.option_4
             ):
-                "Option must be different"
+                raise ValidationError("Option must be different")

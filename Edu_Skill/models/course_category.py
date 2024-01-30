@@ -37,7 +37,7 @@ class CategoryDetails(models.Model):
         required=True,
     )
 
-    def _compute_course_count(self):
+    def _compute_course_count(self):  # Count Course Match With Category
         for res in self:
             course_count = self.env["course.detail"].search_count(
                 [("category_id", "=", res.id)]
@@ -51,9 +51,7 @@ class CategoryDetails(models.Model):
                 "name": "Course",
                 "res_model": "course.detail",
                 "res_id": int(
-                    self.env["course.detail"].search(
-                        [("category_id", "=", self.id)]
-                    )
+                    self.env["course.detail"].search([("category_id", "=", self.id)])
                 ),
                 "domain": [("category_id", "=", self.id)],
                 "view_mode": "form",

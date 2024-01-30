@@ -22,7 +22,6 @@
                             <field name="question"/>
                             <field name="option_1"/>
                             <field name="option_3"/>
-                            <field name="user_input"/>
                         </group>
                         <group>
                             <field name="teacher_id"/>
@@ -54,12 +53,12 @@
         <field name="arch" type="xml">
             <search>
                 <field name="question"/>
-                <field name="course_video_id"/>
+                <field name="course_id"/>
                 <group expand="0" string="Group By">
-                    <filter string="Gender" name="group_by_video" context="{'group_by':'course_video_id'}"/>
+                    <filter string="Gender" name="group_by_video" context="{'group_by':'course_id'}"/>
                 </group>
                 <searchpanel>
-                    <field name="course_video_id" icon="fa-video" select="multi" enable_counters="1"/>
+                    <field name="course_id" icon="fa-video" select="multi" enable_counters="1"/>
                 </searchpanel>
             </search>
         </field>

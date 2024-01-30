@@ -14,6 +14,7 @@ class TeacherDetail(models.Model):
         required=True,
         size=16,
         null=False,
+        help="Enter  A First Name.",
     )
     last_name = fields.Char(
         string="Last Name",
@@ -40,6 +41,7 @@ class TeacherDetail(models.Model):
     description = fields.Text(string="Description :", required=True)
     image = fields.Image(string="Image")
 
+    # Compute Age Of Using Enter A date of Birth
     @api.depends("birth_date")
     def _compute_age(self):
         for reference in self:
@@ -49,9 +51,7 @@ class TeacherDetail(models.Model):
             else:
                 reference.age = 1
 
-    def action_teacher_detail(self):
-        print("Teacher Button clicked")
-
+    # Count Course With Releted Teacher
     def _compute_course_count(self):
         for res in self:
             course_count = self.env["course.detail"].search_count(
@@ -84,14 +84,17 @@ class TeacherDetail(models.Model):
                 "type": "ir.actions.act_window",
             }
 
+    # Condition Check For First Name And Last Name Must Be different
     @api.constrains("first_name", "last_name")
     def _check_name(self):
         for record in self:
             if record.first_name == record.last_name:
                 raise ValidationError("First Name and Last Name must be different")
 
+    # Condition Check for Database Unique Email Id
     _sql_constraints = [("email_uniqe", "unique(email)", "Email must be unique.")]
 
+    # Condition Check for Database Unique Phone Number
     _sql_constraints = [
         ("phone_number_uniqe", "unique(phone_number)", "Phone Number must be unique.")
     ]
