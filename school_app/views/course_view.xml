@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <!-- Creating A tree View -->
     <record id="view_course_tree" model="ir.ui.view">
         <field name="name">course.detail.tree</field>
         <field name="model">course.detail</field>
         <field name="arch" type="xml">
-            <tree decoration-success="status == 'done'" decoration-info="status == 'draft'" decoration-danger = "status == 'cancle'" decoration-warning="status == 'in_process'">
-                <field name="teacher_id"/>
+            <tree decoration-success="state == 'done'" decoration-info="state ==
+                'draft'" decoration-danger = "state == 'cancle'"
+                decoration-warning="state == 'in_process'">
+                <field name="teacher_id" />
                 <field name="course_name"/>
-                <field name="activity_ids" widget="list_activity" />
-                <field name="status" decoration-success="status == 'done'" decoration-info="status == 'draft'" decoration-danger = "status == 'cancle'" decoration-warning="status == 'in_process'" widget="badge"/>
+                <field name="price"/>
+                <field name="activity_ids" widget="list_activity" optional="show"/>
+                <field name="state" decoration-success="state == 'done'"
+                    decoration-info="state == 'draft'"
+                    decoration-danger = "state == 'cancle'"
+                    decoration-warning="state == 'in_process'" widget="badge"/>
             </tree>
         </field>
     </record>
@@ -23,41 +30,32 @@
                 ...</p>
         </field>
     </record>
-
-    <record id="cours_view_form" model="ir.ui.view">
+    <!-- Creating A Form View -->
+    <record id="course_view_form" model="ir.ui.view">
         <field name="name">course.detail.form</field>
         <field name="model">course.detail</field>
         <field name="arch" type="xml">
             <form>
-                <header>
-                    <field name="status" widget="statusbar" nolabel="1" options="{'clickable':1}" status_visible="draft,in_proess,done"/>
-                </header>
                 <sheet>
-
-
-                    <div class="oe_title">
-                        <h1>
-                            <field name="priority" widget="priority" class="mr-3" />
-                        </h1>
-                    </div>
+                    <field name="image" widget="image" class="oe_avatar"/>
                     <group>
-                        <field name="teacher_id"/>
-                        <field name="course_upload_date"/>
-                        <field name="first_name"/>
-                        <field name="course_name"/>
-                        <field name="teacher_count"/>
-
-
-
-                        <!-- create Button with Action Type -->
-                        <button name="%(school_app.action_course_detail)d" string="Cencle" confirm="Are You Sure To Cencle ?" type="action" class="oe_highlight"/>
-
-                        <!-- create  a button with object Type -->
-                         <button name="object_button" string="Object Button" class="oe_highlight" type="object"/>
+                        <group>
+                            <field name="teacher_id"/>
+                            <field name="course_upload_date"/>
+                            <field name="level"/>
+                            <field name="price"/>
+                        </group>
+                        <group>
+                            <field name="teacher_last_name" />
+                            <field name="course_name"/>
+                            <field name="language"/>
+                            <field name="state"/>
+                        </group>
                     </group>
                     <notebook>
                         <page string="Description" name="description">
-                            <field name="description" placeholder="Enter Your Description" />
+                            <field name="description"
+                                placeholder="Enter Your Description" />
                         </page>
                     </notebook>
                 </sheet>
@@ -67,6 +65,18 @@
                     <field name="message_ids"/>
                 </div>
             </form>
+        </field>
+    </record>
+
+    <!-- Creating A search View -->
+    <record id="view_course_search" model="ir.ui.view">
+        <field name="name">course.detail.search</field>
+        <field name="model">course.detail</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="course_name"  />
+                <field name="teacher_id"/>
+            </search>
         </field>
     </record>
 </odoo>

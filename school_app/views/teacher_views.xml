@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-
     <record id="view_teacher_tree" model="ir.ui.view">
         <field name="name">teacher.detail.tree</field>
         <field name="model">teacher.detail</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="first_name"/>
+                <field name="last_name"/>
                 <field name="age"/>
                 <field name="gender"/>
-                <field name="name"/>
-                <field name="address"/>
+
             </tree>
         </field>
     </record>
@@ -23,7 +22,7 @@
                 <sheet>
                     <!-- Create a smart buttton -->
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_open_course" type="object" class="oe_stat_button" icon="fa-book">
+                        <button name="action_open_course" type="object" class="oe_stat_button" icon="fa-book" attrs="{'invisible': [('course_count', '=', 0)]}">
                             <div class="o_stat_info">
                                 <field name="course_count" class="oe_stat_value" />
                                 <span class="o_stat_text">Course</span>
@@ -32,35 +31,41 @@
                     </div>
                     <group>
                         <group>
-                            <field name="first_name"/>
-                            <field name="age"/>
-                            <field name="gender"/>
-                            <field name="birth_date"/>
+                            <label for="first_name"/>
+                            <h1>
+                                <field name="first_name" placeholder="Enter First Name"/>
+                            </h1>
+                            <label for="last_name"/>
+                            <h1>
+                                <field name="last_name"/>
+                            </h1>
                         </group>
                         <group>
-                            <field name="name"/>
+                            <field name="image" widget="image" class="oe_avatar"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="age"/>
+                            <field name="gender"/>
+                            <field name="email" widget="phone"/>
+                            <field name="qualification"/>
+                        </group>
+                        <group>
+                            <field name="birth_date"/>
+                            <field name="phone_number" widget="phone" />
                             <field name="address"/>
+
                             <field name="active" invisible="1"/>
                         </group>
                     </group>
                     <group>
-
-                    <!-- create Button with Action Type -->
-                        <button name="%(school_app.action_teacher_detail)d" string="Cencle" confirm="Are You Sure To open ?" type="action" class="oe_highlight"/>
-
+                        <field name="description"/>
                     </group>
-                        <!-- create  a button with object Type -->
-                    <button name="action_teacher_detail" string="Object Button" class="oe_highlight" type="object"/>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" groups="base.group_user"/>
-                    <field name="activity_ids" />
-                    <field name="message_ids"/>
-                </div>
             </form>
         </field>
     </record>
-
 
     <record id="action_teacher_detail" model="ir.actions.act_window">
         <field name="name">Teacher</field>
@@ -72,14 +77,14 @@
             <p class="o_view_nocontent_smiling_face">No teacher Found.. </p>
         </field>
     </record>
+
     <record id="view_teacher_search" model="ir.ui.view">
         <field name="name">teacher.detail.search</field>
         <field name="model">teacher.detail</field>
         <field name="arch" type="xml">
             <search>
-                <field name="first_name" string="First Name" filter_domain="['|',('first_name','ilike',self),('name','ilike',self)]" />
+                <field name="first_name" string="First Name" filter_domain="['|',('first_name','ilike',self),('last_name','ilike',self)]" />
                 <field name="age"/>
-                <field name="name"/>
                 <field name="gender"/>
                 <filter name="filter_male" string="Male" domain="[('gender', '=','Male')]"/>
                 <separator/>
