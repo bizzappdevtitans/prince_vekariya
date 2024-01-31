@@ -40,6 +40,12 @@ class TeacherDetail(models.Model):
     qualification = fields.Char(string="Qualification :", required=True)
     description = fields.Text(string="Description :", required=True)
     image = fields.Image(string="Image")
+    reference_no = fields.Char(
+        string="Teacher Reference",
+        required=True,
+        readonly=True,
+        default=lambda self: _("New"),
+    )
 
     # Compute Age Of Using Enter A date of Birth
     @api.depends("birth_date")
@@ -56,7 +62,7 @@ class TeacherDetail(models.Model):
         for res in self:
             course_count = self.env["course.detail"].search_count(
                 [("teacher_id", "=", res.id)]
-            )
+            )  # Use OF Search Count ORM Method
             res.course_count = course_count
 
     def action_open_course(self):
@@ -67,7 +73,7 @@ class TeacherDetail(models.Model):
                 "res_model": "course.detail",
                 "res_id": int(
                     self.env["course.detail"].search([("teacher_id", "=", self.id)])
-                ),
+                ),  # Use OF Search ORM Method
                 "domain": [("teacher_id", "=", self.id)],
                 "view_mode": "form",
                 "view_type": "form",
@@ -98,3 +104,13 @@ class TeacherDetail(models.Model):
     _sql_constraints = [
         ("phone_number_uniqe", "unique(phone_number)", "Phone Number must be unique.")
     ]
+
+    # Generate Sequence Using Create ORM Method
+    @api.model
+    def create(self, vals):
+        if vals.get("reference_no", _("New")) == _("New"):
+            vals["reference_no"] = self.env["ir.sequence"].next_by_code(
+                "teacher.detail"
+            ) or _("New")
+        res = super(TeacherDetail, self).create(vals)
+        return res

@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class CourseOrderItem(models.Model):
@@ -26,3 +26,18 @@ class CourseOrderItem(models.Model):
         required=True,
     )
     price = fields.Float(string="Price : ")
+    reference_no = fields.Char(
+            string="Order Item Reference",
+            required=True,
+            readonly=True,
+            default=lambda self: _("New"),
+        )
+    # Generate Sequence Using Create ORM Method
+    @api.model
+    def create(self, vals):
+        if vals.get("reference_no", _("New")) == _("New"):
+            vals["reference_no"] = self.env["ir.sequence"].next_by_code(
+                "course.item.order.detail"
+            ) or _("New")
+        res = super(CourseOrderItem, self).create(vals)
+        return res

@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from datetime import date
 from odoo.exceptions import ValidationError
 
@@ -41,6 +41,12 @@ class UserDetail(models.Model):
         string="Graduation",
         required=True,
     )
+    reference_no = fields.Char(
+        string="User Reference",
+        required=True,
+        readonly=True,
+        default=lambda self: _("New"),
+    )
     qualification = fields.Char(string="Qualification :", required=True)
     description = fields.Text(string="Description :", required=True)
     image = fields.Image(string="Image")
@@ -66,6 +72,7 @@ class UserDetail(models.Model):
         ("phone_number_uniqe", "unique(phone_number)", "Phone Number must be unique.")
     ]
 
+    # Calculate Age Using Date Of Birth.
     @api.onchange("birth_date")
     def _compute_age(self):
         for reference in self:
@@ -74,3 +81,13 @@ class UserDetail(models.Model):
                 reference.age = today.year - reference.birth_date.year
             else:
                 reference.age = 1
+
+    # Generate Sequence Using Create ORM Method
+    @api.model
+    def create(self, vals):
+        if vals.get("reference_no", _("New")) == _("New"):
+            vals["reference_no"] = self.env["ir.sequence"].next_by_code(
+                "user.detail"
+            ) or _("New")
+        res = super(UserDetail, self).create(vals)
+        return res

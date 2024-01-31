@@ -49,6 +49,7 @@ class CourseOrder(models.Model):
     )
     admin_note = fields.Text(string="Admin Note : ")
 
+    # Check Condition For First Name And Last Name Must Be different
     @api.constrains("first_name", "last_name")
     def _check_name(self):
         for record in self:
@@ -65,7 +66,7 @@ class CourseOrder(models.Model):
         ("order_id_uniqe", "unique(order_id)", "Order id must be unique.")
     ]
 
-    # Generate Sequence
+    # Generate Sequence Using Create ORM Method
     @api.model
     def create(self, vals):
         if vals.get("reference_no", _("New")) == _("New"):

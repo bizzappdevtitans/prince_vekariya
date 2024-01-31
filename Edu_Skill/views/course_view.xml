@@ -4,16 +4,24 @@
         <field name="name">course.detail.tree</field>
         <field name="model">course.detail</field>
         <field name="arch" type="xml">
-            <tree decoration-success="state == 'done'" decoration-info="state == 'draft'" decoration-danger = "state == 'cancle'" decoration-warning="state == 'in_process'">
+            <tree>
                 <field name="teacher_id" />
                 <field name="course_name"/>
                 <field name="category_id"/>
                 <field name="price"/>
                 <field name="activity_ids" widget="list_activity" optional="show"/>
-                <field name="state" decoration-success="state == 'done'" decoration-info="state == 'draft'" decoration-danger = "state == 'cancle'" decoration-warning="state == 'in_process'" widget="badge"/>
             </tree>
         </field>
     </record>
+    <data>
+       <record id="seq_course_detail" model="ir.sequence">
+           <field name="name">Course Detail</field>
+           <field name="code">course.detail</field>
+           <field name="prefix">CD</field>
+           <field name="padding">5</field>
+           <field name="company_id" eval="False"/>
+       </record>
+    </data>
     <record id="action_course_detail" model="ir.actions.act_window">
         <field name="name">Course</field>
         <field name="type">ir.actions.act_window</field>
@@ -32,6 +40,9 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <h1>
+                        <field name="reference_no"/>
+                    </h1>
                     <!-- Create a smart buttton -->
                     <div class="oe_button_box" name="button_box">
                         <button name="action_open_course" type="object" class="oe_stat_button" icon="fa-book" attrs="{'invisible': [('video_count', '=', 0)]}">

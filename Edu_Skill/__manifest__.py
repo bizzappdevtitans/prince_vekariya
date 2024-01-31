@@ -1,8 +1,6 @@
 {
     "name": "edu_skill",
     "summary": """Provide online Education""",
-    "description": """
-    """,
     "author": "bizzappdev",
     "website": "http://www.bizzappdev.com",
     "category": "Uncategorized",

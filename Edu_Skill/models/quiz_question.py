@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
 
@@ -19,7 +19,12 @@ class QuizQuestion(models.Model):
     option_4 = fields.Char(string="Option 4")
     right_answer = fields.Char(string="Answer", required=True)
     verified = fields.Boolean(string="verified", default=False)
-
+    reference_no = fields.Char(
+        string="Quiz Question Reference",
+        required=True,
+        readonly=True,
+        default=lambda self: _("New"),
+    )
     # Condition Check For Option Can Be Different
     @api.constrains("option_1", "option_2", "option_3", "option_4")
     def _check_option(self):
@@ -33,3 +38,13 @@ class QuizQuestion(models.Model):
                 or record.option_3 == record.option_4
             ):
                 raise ValidationError("Option must be different")
+
+    # Generate Sequence Using Create ORM Method
+    @api.model
+    def create(self, vals):
+        if vals.get("reference_no", _("New")) == _("New"):
+            vals["reference_no"] = self.env["ir.sequence"].next_by_code(
+                "quiz.detail"
+            ) or _("New")
+        res = super(QuizQuestion, self).create(vals)
+        return res

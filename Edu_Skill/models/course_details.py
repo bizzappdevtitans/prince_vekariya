@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
 
@@ -6,18 +6,18 @@ class CourseDetails(models.Model):
     _name = "course.detail"
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Course Detail"
-    _rec_name = "course_name"
 
     teacher_id = fields.Many2one(
-        "teacher.detail", ondelete="cascade", string="Teacher", required=True
+        "teacher.detail",
+        ondelete="cascade",
+        string="Teacher",
     )
     category_id = fields.Many2one(
-        "category.detail", ondelete="cascade", string="Category", required=True
+        "category.detail", ondelete="cascade", string="Category"
     )
     teacher_last_name = fields.Char(string="Last Name", related="teacher_id.last_name")
-    course_name = fields.Char(string="Course Name", required=True)
+    course_name = fields.Char(string="Course Name")
     course_upload_date = fields.Date(string="Upload Date", default=fields.Datetime.now)
-    reference = fields.Char(string="Reference")
     description = fields.Html(string="Description")
 
     level = fields.Selection(
@@ -26,7 +26,6 @@ class CourseDetails(models.Model):
             ("intermediate", "Intermediate"),
         ],
         string="Level",
-        required=True,
     )
 
     language = fields.Selection(
@@ -34,7 +33,12 @@ class CourseDetails(models.Model):
             ("english", "English"),
         ],
         string="Language",
+    )
+    reference_no = fields.Char(
+        string="Course Reference",
         required=True,
+        readonly=True,
+        default=lambda self: _("New"),
     )
 
     state = fields.Selection(
@@ -46,7 +50,6 @@ class CourseDetails(models.Model):
         ],
         string="Status",
         default="draft",
-        required=True,
     )
     video_count = fields.Integer(string="Video Count", compute="_compute_video_count")
     price = fields.Integer(
@@ -54,10 +57,6 @@ class CourseDetails(models.Model):
         null=False,
     )
     image = fields.Image(string="Course Image", required=True)
-
-    @api.onchange("teacher_id")  # using Onchange Function Get Teacher First Name
-    def onchange_teacher_id(self):
-        self.reference = self.teacher_id.first_name
 
     # Action For Mode Of Course
     def action_in_process(self):
@@ -80,7 +79,7 @@ class CourseDetails(models.Model):
         for res in self:  # Count Number Of Video In video.detail
             video_count = self.env["video.detail"].search_count(
                 [("course_id", "=", res.id)]
-            )
+            )  # Use OF Search Conut ORM Method
             res.video_count = video_count
 
     def action_open_course(self):
@@ -91,7 +90,7 @@ class CourseDetails(models.Model):
                 "res_model": "video.detail",
                 "res_id": int(
                     self.env["video.detail"].search([("course_id", "=", self.id)])
-                ),
+                ),  # Use OF Search ORM Method
                 "domain": [("course_id", "=", self.id)],
                 "view_mode": "form",
                 "view_type": "form",
@@ -111,3 +110,46 @@ class CourseDetails(models.Model):
     _sql_constraints = [
         ("course_name_uniqe", "unique(course_name)", "Course Name must be unique.")
     ]
+
+    # Generate Sequence Using Create ORM Method
+    @api.model
+    def create(self, vals):
+        if vals.get("reference_no", _("New")) == _("New"):
+            vals["reference_no"] = self.env["ir.sequence"].next_by_code(
+                "course.detail"
+            ) or _("New")
+        res = super(CourseDetails, self).create(vals)
+        return res
+
+    @api.model
+    def create(self, vals):
+        res = super(CourseDetails, self).create(
+            {"language": "english", "level": "beginner", "state": "draft"}
+        )
+        return res
+
+    def name_get(self):
+        res = []
+        for rec in self:
+            res.append(
+                (
+                    rec.id,
+                    "%s, %s" % (rec.category_id,),
+                )
+            )
+        return res
+
+    @api.model
+    def _name_search(
+        self, name, args=None, operator="ilike", limit=100, name_get_uid=None
+    ):
+        args = args or []
+        domain = []
+        if name:
+            domain = [
+                "|",
+                "|",
+                ("teacher_id", operator, name),
+                ("teacher_last_name", operator, name),
+            ]
+        return self._search(domain + args, limit=limit, access_rights_uid=name_get_uid)

@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class CategoryDetails(models.Model):
@@ -10,13 +10,8 @@ class CategoryDetails(models.Model):
     category_name = fields.Char(
         "Category Name",
         tracking=True,
-        required=True,
     )
-    category_image = fields.Image(
-        "Cetegory Image",
-        tracking=True,
-        required=True,
-    )
+    category_image = fields.Image("Cetegory Image")
     category_upload_date = fields.Date(
         "Upload Date",
         default=fields.Datetime.now,
@@ -33,25 +28,31 @@ class CategoryDetails(models.Model):
             ("done", "Done"),
         ],
         string="Status",
-        default="draft",
+    )
+    reference_no = fields.Char(
+        string="Category Order Reference",
         required=True,
+        readonly=True,
+        default=lambda self: _("New"),
     )
 
     def _compute_course_count(self):  # Count Course Match With Category
         for res in self:
             course_count = self.env["course.detail"].search_count(
                 [("category_id", "=", res.id)]
-            )
+            )  # Use OF Search Conut ORM Method
             res.course_count = course_count
 
     def action_open_course(self):
-        if self.course_count == 1:
+        if self.course_count == 1:  # Condition Check For Open Form View
             return {
                 "type": "ir.actions.act_window",
                 "name": "Course",
                 "res_model": "course.detail",
                 "res_id": int(
-                    self.env["course.detail"].search([("category_id", "=", self.id)])
+                    self.env["course.detail"].search(
+                        [("category_id", "=", self.id)]
+                    )  # Use OF Search ORM Method
                 ),
                 "domain": [("category_id", "=", self.id)],
                 "view_mode": "form",
@@ -72,3 +73,27 @@ class CategoryDetails(models.Model):
     _sql_constraints = [
         ("category_uniqe", "unique(category_name)", "Category Name must be unique.")
     ]
+
+    # Generate Sequence using Create ORM Method
+    @api.model
+    def create(self, vals):
+        if vals.get("reference_no", _("New")) == _("New"):
+            vals["reference_no"] = self.env["ir.sequence"].next_by_code(
+                "category.detail"
+            ) or _("New")
+        res = super(CategoryDetails, self).create(vals)
+        return res
+
+    def write(self, vals):
+        if "category_name" in vals and vals["category_name"]:
+            vals["category_name"] = vals["category_name"].capitalize()
+            return super(CategoryDetails, self).write(vals)
+
+    def unlink(self):
+        return super(CategoryDetails, self).unlink()
+
+    def name_get(self):
+        res = []
+        for rec in self:
+            res.append((rec.id, "%s, %s" % (rec.category_name, rec.reference_no)))
+        return res

@@ -12,12 +12,24 @@
             </tree>
         </field>
     </record>
+    <data>
+       <record id="seq_category_detail" model="ir.sequence">
+           <field name="name">Category Name</field>
+           <field name="code">category.detail</field>
+           <field name="prefix">CD</field>
+           <field name="padding">5</field>
+           <field name="company_id" eval="False"/>
+       </record>
+    </data>
     <record id="category_view_form" model="ir.ui.view">
         <field name="name">category.detail.form</field>
         <field name="model">category.detail</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <h1>
+                        <field name="reference_no"/>
+                    </h1>
                     <!-- Create a smart buttton -->
                     <div class="oe_button_box" name="button_box">
                             <button name="action_open_course" type="object" class="oe_stat_button" icon="fa-book" attrs="{'invisible': [('course_count', '=', 0)]}">

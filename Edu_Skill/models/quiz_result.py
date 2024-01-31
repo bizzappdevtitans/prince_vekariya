@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class QuizResult(models.Model):
@@ -24,3 +24,18 @@ class QuizResult(models.Model):
     right_answer = fields.Char(string="Answer")
     percentge = fields.Float("percentge", default=0.0)
     verified = fields.Boolean(string="verified", default=False)
+    reference_no = fields.Char(
+        string="Quiz Result Reference",
+        required=True,
+        readonly=True,
+        default=lambda self: _("New"),
+    )
+    # Generate Sequence Using Create ORM Method
+    @api.model
+    def create(self, vals):
+        if vals.get("reference_no", _("New")) == _("New"):
+            vals["reference_no"] = self.env["ir.sequence"].next_by_code(
+                "quiz.result"
+            ) or _("New")
+        res = super(QuizResult, self).create(vals)
+        return res

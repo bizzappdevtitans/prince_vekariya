@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class VideoDetails(models.Model):
@@ -15,3 +15,18 @@ class VideoDetails(models.Model):
     description = fields.Html(string="Video Description", null=False)
     preview = fields.Boolean(string="Preview", default=False)
     time_duration = fields.Char(string="Time Duration", null=False)
+    reference_no = fields.Char(
+        string="Course Video Reference",
+        required=True,
+        readonly=True,
+        default=lambda self: _("New"),
+    )
+    # Generate Sequence Using Create ORM Method
+    @api.model
+    def create(self, vals):
+        if vals.get("reference_no", _("New")) == _("New"):
+            vals["reference_no"] = self.env["ir.sequence"].next_by_code(
+                "video.detail"
+            ) or _("New")
+        res = super(VideoDetails, self).create(vals)
+        return res
