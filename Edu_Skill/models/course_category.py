@@ -1,11 +1,11 @@
 from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError, Warning
 
 
 class CategoryDetails(models.Model):
     _name = "category.detail"
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Category Detail"
-    _rec_name = "category_name"
 
     category_name = fields.Char(
         "Category Name",
@@ -32,7 +32,6 @@ class CategoryDetails(models.Model):
     reference_no = fields.Char(
         string="Category Order Reference",
         required=True,
-        readonly=True,
         default=lambda self: _("New"),
     )
 
@@ -84,16 +83,55 @@ class CategoryDetails(models.Model):
         res = super(CategoryDetails, self).create(vals)
         return res
 
-    def write(self, vals):
+    def write(self, vals):  # Using Write Orm First Leter Can be Capital
         if "category_name" in vals and vals["category_name"]:
             vals["category_name"] = vals["category_name"].capitalize()
             return super(CategoryDetails, self).write(vals)
 
+    def name_get(self):  # Using name_get method pass category name and reference Number
+        response = []
+        for record in self:
+            response.append(
+                (record.id, "%s, %s" % (record.category_name, record.reference_no))
+            )
+        return response
+
+    # using name_search Method search with other model can use of category_name and
+    # reference_no
+    @api.model
+    def _name_search(
+        self, name, args=None, operator="ilike", limit=100, name_get_uid=None
+    ):
+        args = args or []
+        domain = []
+        if name:
+            domain = [
+                "|",
+                ("category_name", operator, name),
+                ("reference_no", operator, name),
+            ]
+        return self._search(domain + args, limit=limit, access_rights_uid=name_get_uid)
+
+    # In Using Unlink ORM Method Condtion Check for state is Draft And Cancel then
+    # Delete
     def unlink(self):
+        for states in self:
+            if states.state not in ("draft", "cancel"):
+                raise ValidationError(
+                    _("You cannot delete an Category which is not draft or cancelled. ")
+                )
         return super(CategoryDetails, self).unlink()
 
-    def name_get(self):
-        res = []
-        for rec in self:
-            res.append((rec.id, "%s, %s" % (rec.category_name, rec.reference_no)))
-        return res
+    # Using search_read method can Check state is Draft amd in Process
+    @api.model
+    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
+        domain = [
+            "|",
+            "|",
+            ("state", "ilike", "draft"),
+            ("state", "ilike", "in_process"),
+            ("state", "ilike", "done"),
+        ]
+        return super(CategoryDetails, self).search_read(
+            domain, fields, offset, limit, order
+        )

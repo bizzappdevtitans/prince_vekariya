@@ -25,6 +25,7 @@ class QuizQuestion(models.Model):
         readonly=True,
         default=lambda self: _("New"),
     )
+
     # Condition Check For Option Can Be Different
     @api.constrains("option_1", "option_2", "option_3", "option_4")
     def _check_option(self):
@@ -48,3 +49,54 @@ class QuizQuestion(models.Model):
             ) or _("New")
         res = super(QuizQuestion, self).create(vals)
         return res
+
+    def write(self, vals):  # Using Write Orm First Leter Can be Capital
+        if "question" in vals and vals["question"]:
+            vals["question"] = vals["question"].capitalize()
+            return super(QuizQuestion, self).write(vals)
+
+    # get Name of record Of Using name_get ORM Method
+    def name_get(self):
+        response = []
+        for record in self:
+            response.append(
+                (record.id, "%s, %s" % (record.question, record.course_id.course_name))
+            )
+        return response
+
+    # using name_search Method We Can Find Multipal Field Record
+    @api.model
+    def _name_search(
+        self, name, args=None, operator="ilike", limit=100, name_get_uid=None
+    ):
+        args = args or []
+        domain = []
+        if name:
+            domain = [
+                "|",
+                ("question", operator, name),
+                ("question", operator, name),
+                ("course_name", operator, name),
+            ]
+        return self._search(domain + args, limit=limit, access_rights_uid=name_get_uid)
+
+    # In Using Unlink ORM Method Condtion Check for verified is False Delete
+    def unlink(self):
+        for states in self:
+            if states.verified not in ("False"):
+                raise ValidationError(
+                    _("You cannot delete an Verified which is not Verified. ")
+                )
+        return super(QuizQuestion, self).unlink()
+
+    # Using search_read method can Check verified
+    @api.model
+    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
+        domain = [
+            "|",
+            ("verified", "ilike", "True"),
+            ("verified", "ilike", "False"),
+        ]
+        return super(QuizQuestion, self).search_read(
+            domain, fields, offset, limit, order
+        )

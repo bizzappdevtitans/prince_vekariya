@@ -114,3 +114,60 @@ class TeacherDetail(models.Model):
             ) or _("New")
         res = super(TeacherDetail, self).create(vals)
         return res
+
+    # get Name of record Of Using name_get ORM Method
+    def name_get(self):
+        res = []
+        for rec in self:
+            res.append((rec.id, "%s %s" % (rec.first_name, rec.last_name)))
+        return res
+
+    def write(self, vals):  # Using Write Orm First Leter Can be Capital
+        if "qualification" in vals and vals["qualification"]:
+            vals["qualification"] = vals["qualification"].upper()
+            return super(TeacherDetail, self).write(vals)
+
+    # using name_search Method We Can Find Multipal Field Record
+    @api.model
+    def _name_search(
+        self, name, args=None, operator="ilike", limit=100, name_get_uid=None
+    ):
+        args = args or []
+        domain = []
+        if name:
+            domain = [
+                "|",
+                "|",
+                "|",
+                "|",
+                "|",
+                ("first_name", operator, name),
+                ("last_name", operator, name),
+                ("email", operator, name),
+                ("phone_number", operator, name),
+                ("qualification", operator, name),
+                ("reference_no", operator, name),
+            ]
+        return self._search(domain + args, limit=limit, access_rights_uid=name_get_uid)
+
+    # In Using Unlink ORM Method Condtion Check for state is Draft And Cancel then
+    # Delete
+    def unlink(self):
+        for states in self:
+            if states.active not in ("False"):
+                raise ValidationError(
+                    _("You cannot delete an Teacher which is Active. ")
+                )
+        return super(TeacherDetail, self).unlink()
+
+    # Using search_read method can Check state is Draft amd in Process
+    @api.model
+    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
+        domain = [
+            "|",
+            ("active", "ilike", "False"),
+            ("active", "ilike", "True"),
+        ]
+        return super(TeacherDetail, self).search_read(
+            domain, fields, offset, limit, order
+        )

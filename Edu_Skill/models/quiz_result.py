@@ -1,4 +1,5 @@
 from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 
 class QuizResult(models.Model):
@@ -30,6 +31,7 @@ class QuizResult(models.Model):
         readonly=True,
         default=lambda self: _("New"),
     )
+
     # Generate Sequence Using Create ORM Method
     @api.model
     def create(self, vals):
@@ -39,3 +41,55 @@ class QuizResult(models.Model):
             ) or _("New")
         res = super(QuizResult, self).create(vals)
         return res
+
+    def write(self, vals):  # Using Write Orm First Leter Can be Capital
+        if "category_name" in vals and vals["category_name"]:
+            vals["category_name"] = vals["category_name"].capitalize()
+            return super(QuizResult, self).write(vals)
+
+    # get Name of record Of Using name_get ORM Method
+    def name_get(self):
+        response = []
+        for record in self:
+            response.append(
+                (record.id, "%s, %s" % (record.category_name, record.reference_no))
+            )
+        return response
+
+    # using name_search Method We Can Find Multipal Field Record
+    @api.model
+    def _name_search(
+        self, name, args=None, operator="ilike", limit=100, name_get_uid=None
+    ):
+        args = args or []
+        domain = []
+        if name:
+            domain = [
+                "|",
+                "|",
+                "|",
+                ("course_id", operator, name),
+                ("user_id", operator, name),
+                ("user_last_name", operator, name),
+                ("reference_no", operator, name),
+            ]
+        return self._search(domain + args, limit=limit, access_rights_uid=name_get_uid)
+
+    # In Using Unlink ORM Method Condtion Check for verified is False
+    def unlink(self):
+        for states in self:
+            if states.verified not in ("False"):
+                raise ValidationError(
+                    _("You cannot delete an Verified which is not Verified. ")
+                )
+        return super(QuizResult, self).unlink()
+
+    # Using search_read method can Check state is verified amd in True,False
+    @api.model
+    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
+        domain = [
+            "|",
+            ("verified", "ilike", "True"),
+            ("verified", "ilike", "False"),
+        ]
+        return super(QuizResult, self).search_read(domain, fields, offset, limit, order)

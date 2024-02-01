@@ -6,6 +6,7 @@ class CourseDetails(models.Model):
     _name = "course.detail"
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Course Detail"
+    _rec_name = "course_name"
 
     teacher_id = fields.Many2one(
         "teacher.detail",
@@ -121,24 +122,25 @@ class CourseDetails(models.Model):
         res = super(CourseDetails, self).create(vals)
         return res
 
-    @api.model
-    def create(self, vals):
-        res = super(CourseDetails, self).create(
-            {"language": "english", "level": "beginner", "state": "draft"}
-        )
-        return res
-
+    # Using name_get method pass Course name and category_name and first_name
     def name_get(self):
         res = []
         for rec in self:
             res.append(
                 (
                     rec.id,
-                    "%s, %s" % (rec.category_id,),
+                    "%s, %s , %s %s"
+                    % (
+                        rec.course_name,
+                        rec.category_id.category_name,
+                        rec.teacher_id.first_name,
+                        rec.teacher_last_name,
+                    ),
                 )
             )
         return res
 
+    # using name_search Method We Can Find Multipal Field Record
     @api.model
     def _name_search(
         self, name, args=None, operator="ilike", limit=100, name_get_uid=None
@@ -149,7 +151,45 @@ class CourseDetails(models.Model):
             domain = [
                 "|",
                 "|",
-                ("teacher_id", operator, name),
+                "|",
+                ("course_name", operator, name),
+                ("category_id", operator, name),
                 ("teacher_last_name", operator, name),
+                ("teacher_id", operator, name),
             ]
         return self._search(domain + args, limit=limit, access_rights_uid=name_get_uid)
+
+    def write(self, vals):  # Using Write Orm First Leter Can be Capital
+        if "course_name" in vals and vals["course_name"]:
+            vals["course_name"] = vals["course_name"].capitalize()
+            return super(CourseDetails, self).write(vals)
+
+    # In Using Unlink ORM Method Condtion Check for state is Draft And Cancel then
+    # Delete
+    def unlink(self):
+        for states in self:
+            if states.state not in ("draft", "cancel"):
+                raise ValidationError(
+                    _("You cannot delete an Course which is not draft or cancelled. ")
+                )
+        return super(CourseDetails, self).unlink()
+
+    # Using search_read method can Check state and Level language
+    @api.model
+    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
+        domain = [
+            "|",
+            "|",
+            "|",
+            "|",
+            "|",
+            ("state", "ilike", "draft"),
+            ("state", "ilike", "in_process"),
+            ("state", "ilike", "done"),
+            ("level", "ilike", "beginner"),
+            ("level", "ilike", "intermediate"),
+            ("language", "ilike", "english"),
+        ]
+        return super(CourseDetails, self).search_read(
+            domain, fields, offset, limit, order
+        )

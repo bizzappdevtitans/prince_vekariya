@@ -75,3 +75,68 @@ class CourseOrder(models.Model):
             ) or _("New")
         res = super(CourseOrder, self).create(vals)
         return res
+
+    def write(self, vals):  # Using Write Orm First Leter Can be Capital
+        if "admin_note" in vals and vals["admin_note"]:
+            vals["admin_note"] = vals["admin_note"].capitalize()
+            return super(CourseOrder, self).write(vals)
+
+    # get Name of record Of Using name_get ORM Method
+    def name_get(self):
+        response = []
+        for record in self:
+            response.append(
+                (
+                    record.id,
+                    "%s, %s %s"
+                    % (record.order_id, record.first_name, record.last_name),
+                )
+            )
+        return response
+
+    # using name_search Method We Can Find Multipal Field Record
+    @api.model
+    def _name_search(
+        self, name, args=None, operator="ilike", limit=100, name_get_uid=None
+    ):
+        args = args or []
+        domain = []
+        if name:
+            domain = [
+                "|",
+                "|",
+                "|",
+                "|",
+                "|",
+                ("first_name", operator, name),
+                ("last_name", operator, name),
+                ("payment_mode", operator, name),
+                ("payment_id", operator, name),
+                ("reference_no", operator, name),
+                ("order_id", operator, name),
+            ]
+        return self._search(domain + args, limit=limit, access_rights_uid=name_get_uid)
+
+    # In Using Unlink ORM Method Condtion Check for state is Draft And Cancel then
+    # Delete
+    def unlink(self):
+        for states in self:
+            if states.state not in ("pending", "cancel"):
+                raise ValidationError(
+                    _("You cannot delete an Order which is not cancelled or pending. ")
+                )
+        return super(CourseOrder, self).unlink()
+
+    # Using search_read method can Check state is Draft and in Process and Cancel
+    @api.model
+    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
+        domain = [
+            "|",
+            "|",
+            ("state", "ilike", "actepted"),
+            ("state", "ilike", "pending"),
+            ("state", "ilike", "cancel"),
+        ]
+        return super(CourseOrder, self).search_read(
+            domain, fields, offset, limit, order
+        )
