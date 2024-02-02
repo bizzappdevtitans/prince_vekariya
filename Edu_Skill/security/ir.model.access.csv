@@ -8,3 +8,4 @@ Edu_Skill.access_order_detail,access_order_detail,Edu_Skill.model_order_detail,b
 Edu_Skill.access_course_item_order_detail,access_course_item_order_detail,Edu_Skill.model_course_item_order_detail,base.group_user,1,1,1,1
 Edu_Skill.access_quiz_detail,access_quiz_detail,Edu_Skill.model_quiz_detail,base.group_user,1,1,1,1
 Edu_Skill.access_quiz_result,access_quiz_result,Edu_Skill.model_quiz_result,base.group_user,1,1,1,1
+Edu_Skill.access_review_rating_detail,access_review_rating_detail,Edu_Skill.model_review_rating_detail,base.group_user,1,1,1,1

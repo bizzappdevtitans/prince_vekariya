@@ -19,6 +19,7 @@
         "views/course_order.xml",
         "views/quiz_result_detail.xml",
         "views/course_order_item.xml",
+        "views/review_rating_detail.xml",
     ],
     "application": True,
     "license": "LGPL-3",

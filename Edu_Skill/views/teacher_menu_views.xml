@@ -15,4 +15,5 @@
     <menuitem id="menu_order" name="Order" parent="menu_root"/>
     <menuitem  id="menu_course_order_detail" name="Course Order" parent="menu_order" action="action_order_detail"/>
     <menuitem  id="menu_course_order_item_detail" name="Course Item" parent="menu_order" action="action_order_item_detail"/>
+    <menuitem  id="menu_review_reatting_item_detail" name="Review" parent="menu_root" action=""/>
 </odoo>

@@ -1,11 +1,12 @@
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError, Warning
+from odoo.exceptions import ValidationError
 
 
 class CategoryDetails(models.Model):
     _name = "category.detail"
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Category Detail"
+    _rec_name = "category_name"
 
     category_name = fields.Char(
         "Category Name",
@@ -124,7 +125,7 @@ class CategoryDetails(models.Model):
 
     # Using search_read method can Check state is Draft amd in Process
     @api.model
-    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
+    def search_read(self, domain=None, fields=None, offset=2, limit=2, order=None):
         domain = [
             "|",
             "|",
@@ -135,3 +136,4 @@ class CategoryDetails(models.Model):
         return super(CategoryDetails, self).search_read(
             domain, fields, offset, limit, order
         )
+        # Domian use for select data of model Off set Parameter Can Use of starting From 0 index

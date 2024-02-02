@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_review_rating_tree" model="ir.ui.view">
+        <field name="name">review.rating.detail.tree</field>
+        <field name="model">review.rating.detail</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="course_name"/>
+                <field name="user"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_review_rating_form" model="ir.ui.view">
+        <field name="name">review.rating.detail.form</field>
+        <field name="model">review.rating.detail</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <h1>
+                        <field name="reference_no"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="course_name"/>
+                            <field name="user"/>
+                            <field name="subject"/>
+                            <field name="review"/>
+                        </group>
+                        <group>
+                            <field name="rating"/>
+                            <field name="status"/>
+                            <field name="created_at"/>
+                            <field name="status" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <data>
+       <record id="seq_review_rating" model="ir.sequence">
+           <field name="name">Quiz Result</field>
+           <field name="code">review.rating.detail</field>
+           <field name="prefix">QR</field>
+           <field name="padding">5</field>
+           <field name="company_id" eval="False"/>
+       </record>
+    </data>
+
+    <record id="action_review_rating_detail" model="ir.actions.act_window">
+        <field name="name">Quiz Result</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">review.rating.detail</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No Quiz Result Found.. </p>
+        </field>
+    </record>
+
+    <record id="view_review_rating-_search" model="ir.ui.view">
+        <field name="name">review.rating.detail.search</field>
+        <field name="model">review.rating.detail</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="user"/>
+                <field name="course_name"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>

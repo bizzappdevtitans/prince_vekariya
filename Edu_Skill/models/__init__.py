@@ -7,3 +7,4 @@ from . import course_order
 from . import order_course_item
 from . import quiz_question
 from . import quiz_result
+from . import review_rating
