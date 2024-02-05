@@ -15,5 +15,6 @@
     <menuitem id="menu_order" name="Order" parent="menu_root"/>
     <menuitem  id="menu_course_order_detail" name="Course Order" parent="menu_order" action="action_order_detail"/>
     <menuitem  id="menu_course_order_item_detail" name="Course Item" parent="menu_order" action="action_order_item_detail"/>
-    <menuitem  id="menu_review_reatting_item_detail" name="Review" parent="menu_root" action=""/>
+    <menuitem  id="menu_review_ratting_item_detail" name="Review" parent="menu_root" action="action_review_rating_detail"/>
+    <menuitem  id="edu_Skill_config_settings_menu" name="Settings" parent="menu_root" action="edu_skill_config_settings_action"/>
 </odoo>

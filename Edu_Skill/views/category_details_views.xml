@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <odoo>
+
     <record id="view_course_tree" model="ir.ui.view">
         <field name="name">category.detail.tree</field>
         <field name="model">category.detail</field>

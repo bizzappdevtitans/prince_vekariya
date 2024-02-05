@@ -8,3 +8,4 @@ from . import order_course_item
 from . import quiz_question
 from . import quiz_result
 from . import review_rating
+from . import res_config_settings

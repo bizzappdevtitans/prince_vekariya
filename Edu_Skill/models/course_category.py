@@ -81,7 +81,15 @@ class CategoryDetails(models.Model):
             vals["reference_no"] = self.env["ir.sequence"].next_by_code(
                 "category.detail"
             ) or _("New")
+
         res = super(CategoryDetails, self).create(vals)
+        len_category_name = len(vals.get("category_name"))
+        check_len = int(self.env["ir.config_parameter"].get_param("allowed_category"))
+        if len_category_name <= check_len:
+            raise ValidationError(
+                    _("You cannot Add an Category.")
+                )
+
         return res
 
     def write(self, vals):  # Using Write Orm First Leter Can be Capital
