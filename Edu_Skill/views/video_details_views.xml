@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_video_tree" model="ir.ui.view">
+        <field name="name">video.detail.tree</field>
+        <field name="model">video.detail</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="course_id" />
+                <field name="video_caption" />
+                <field name="preview" />
+                <field name="image" />
+            </tree>
+        </field>
+    </record>
+    <data>
+       <record id="seq_video_detail" model="ir.sequence">
+           <field name="name">Video Detail</field>
+           <field name="code">video.detail</field>
+           <field name="prefix">V</field>
+           <field name="padding">5</field>
+           <field name="company_id" eval="False" />
+       </record>
+    </data>
+    <record id="view_video_form" model="ir.ui.view">
+        <field name="name">video.detail.form</field>
+        <field name="model">video.detail</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <h1>
+                        <field name="reference_no" />
+                    </h1>
+                    <field name="image" widget="image" class="oe_avatar" />
+                    <group>
+                        <group>
+                            <field name="course_id" />
+                            <field name="series_number" />
+                            <field name="video_caption" />
+                            <field name="image" />
+                        </group>
+                        <group>
+                            <field name="video" />
+                            <field name="preview" />
+                            <field name="time_duration" />
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_video_detail" model="ir.actions.act_window">
+        <field name="name">Video</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">video.detail</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No Video Found.. </p>
+        </field>
+    </record>
+
+    <record id="view_video_search" model="ir.ui.view">
+        <field name="name">video.detail.search</field>
+        <field name="model">video.detail</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="course_id" />
+                <group expand="0" string="Group By">
+                    <filter
+                        string="Course"
+                        name="group_by_course"
+                        context="{'group_by':'course_id'}"
+                    />
+                </group>
+                <searchpanel>
+                    <field
+                        name="course_id"
+                        icon="fa-book"
+                        select="multi"
+                        enable_counters="1"
+                    />
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+</odoo>

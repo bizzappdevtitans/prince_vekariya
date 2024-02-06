@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_quiz_result_tree" model="ir.ui.view">
+        <field name="name">quiz.result.tree</field>
+        <field name="model">quiz.result</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="user_id" />
+                <field name="user_last_name" />
+                <field name="percentge" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_quiz_result_form" model="ir.ui.view">
+        <field name="name">quiz.result.form</field>
+        <field name="model">quiz.result</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <h1>
+                        <field name="reference_no" />
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="course_id" />
+                            <field name="user_id" />
+                            <field name="total_right_answer" />
+                            <field name="user_input" />
+                            <field name="percentge" />
+                        </group>
+                        <group>
+                            <field name="user_last_name" />
+                            <field name="total_wrong_answer" />
+                            <field name="right_answer" />
+                            <field name="verified" invisible="1" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <data>
+       <record id="seq_quiz_result" model="ir.sequence">
+           <field name="name">Quiz Result</field>
+           <field name="code">quiz.result</field>
+           <field name="prefix">QR</field>
+           <field name="padding">5</field>
+           <field name="company_id" eval="False" />
+       </record>
+    </data>
+
+    <record id="action_quiz_result_detail" model="ir.actions.act_window">
+        <field name="name">Quiz Result</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">quiz.result</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No Quiz Result Found.. </p>
+        </field>
+    </record>
+
+    <record id="view_quiz_result-_search" model="ir.ui.view">
+        <field name="name">quiz.result.search</field>
+        <field name="model">quiz.result</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="user_id" />
+                <field name="user_last_name" />
+                <group expand="0" string="Group By">
+                    <filter
+                        string="Name"
+                        name="group_by_percentge"
+                        context="{'group_by':'user_id'}"
+                    />
+                </group>
+                <searchpanel>
+                    <field
+                        name="user_id"
+                        icon="fa-user"
+                        select="multi"
+                        enable_counters="1"
+                    />
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+</odoo>
