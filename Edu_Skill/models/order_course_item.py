@@ -1,4 +1,4 @@
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -11,7 +11,7 @@ class CourseOrderItem(models.Model):
     order_id = fields.Many2one(
         "order.detail",
         ondelete="cascade",
-        string="Order Id",
+        string="Order Ids",
         required=True,
     )
     user_first_name = fields.Char(
@@ -23,7 +23,7 @@ class CourseOrderItem(models.Model):
     course_name = fields.Many2one(
         "course.detail",
         ondelete="cascade",
-        string="Course Name",
+        string="Course Names",
         required=True,
     )
     price = fields.Float(string="Price : ")

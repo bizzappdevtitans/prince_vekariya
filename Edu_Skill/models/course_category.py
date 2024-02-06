@@ -1,4 +1,4 @@
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -9,7 +9,7 @@ class CategoryDetails(models.Model):
     _rec_name = "category_name"
 
     category_name = fields.Char(
-        "Category Name",
+        "Category Names",
         tracking=True,
     )
     category_image = fields.Image("Cetegory Image")
@@ -19,7 +19,7 @@ class CategoryDetails(models.Model):
         tracking=True,
     )
     course_count = fields.Integer(
-        string="Course Count", compute="_compute_course_count"
+        string="Course Counts", compute="_compute_course_count"
     )
     state = fields.Selection(
         [
@@ -86,9 +86,7 @@ class CategoryDetails(models.Model):
         len_category_name = len(vals.get("category_name"))
         check_len = int(self.env["ir.config_parameter"].get_param("allowed_category"))
         if len_category_name <= check_len:
-            raise ValidationError(
-                    _("You cannot Add an Category.")
-                )
+            raise ValidationError(_("You cannot Add an Category."))
 
         return res
 

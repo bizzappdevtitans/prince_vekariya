@@ -1,4 +1,4 @@
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -12,13 +12,13 @@ class QuizQuestion(models.Model):
         "course.detail", ondelete="cascade", string="Course Name"
     )
     teacher_id = fields.Many2one(string="Teacher Name", related="course_id.teacher_id")
-    question = fields.Char(string="Question", required=True)
-    option_1 = fields.Char(string="Option 1", required=True)
-    option_2 = fields.Char(string="Option 2", required=True)
-    option_3 = fields.Char(string="Option 3")
-    option_4 = fields.Char(string="Option 4")
+    question = fields.Char(string="Questions", required=True)
+    option_1 = fields.Char(string="Option : 1", required=True)
+    option_2 = fields.Char(string="Option : 2", required=True)
+    option_3 = fields.Char(string="Option : 3")
+    option_4 = fields.Char(string="Option  : 4")
     right_answer = fields.Char(string="Answer", required=True)
-    verified = fields.Boolean(string="verified", default=False)
+    verified = fields.Boolean(string="verifieds", default=False)
     reference_no = fields.Char(
         string="Quiz Question Reference",
         required=True,
@@ -38,7 +38,7 @@ class QuizQuestion(models.Model):
                 or record.option_2 == record.option_4
                 or record.option_3 == record.option_4
             ):
-                raise ValidationError("Option must be different")
+                raise ValidationError(_("Option must be different"))
 
     # Generate Sequence Using Create ORM Method
     @api.model

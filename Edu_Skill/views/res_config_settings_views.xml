@@ -1,21 +1,45 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <data>
     <record id="res_config_settings_view_form" model="ir.ui.view">
         <field name="name">res.config.settings.view.eduskill</field>
         <field name="model">res.config.settings</field>
-        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form" />
         <field name="arch" type="xml">
             <xpath expr="//div[hasclass('settings')]" position="inside">
-                <div class="app_settings_block" data-string="Edu Skill" id="edu_skill" string="Edu Skill" data-key="edu_skill">
-                    <h2>Category</h2>
+                <div
+                    class="app_settings_block"
+                    data-string="Edu Skill"
+                    id="edu_skill"
+                    string="Edu Skill"
+                    data-key="edu_skill"
+                >
+                    <h2>Category : </h2>
                     <div class="row mt16 o_settings_container" id="edu_skill_setting">
                         <div class="col-12 col-lg-6 o_setting_box">
-                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_left_pane" />
                             <div class="o_setting_right_pane">
                                 <div class="text-muted content-group mt16">
                                     <h6>Category Length : </h6>
-                                    <field name="allowed_category" class="text-center oe_inline" />
+                                    <field
+                                        name="allowed_category"
+                                        class="text-center oe_inline"
+                                    />
+                                    <span> Minmum</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h2>Course : </h2>
+                    <div class="row mt16 o_settings_container" id="edu_skill_setting">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane" />
+                            <div class="o_setting_right_pane">
+                                <div class="text-muted content-group mt16">
+                                    <h6>Course Length : </h6>
+                                    <field
+                                        name="allowed_course"
+                                        class="text-center oe_inline"
+                                    />
                                     <span> Minmum</span>
                                 </div>
                             </div>
@@ -24,15 +48,13 @@
                 </div>
             </xpath>
         </field>
-        </record>
-        <record id="edu_skill_config_settings_action" model="ir.actions.act_window">
-            <field name="name">Settings</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">res.config.settings</field>
-            <field name="view_mode">form</field>
-            <field name="target">inline</field>
-            <field name="context">{'module' : 'edu_skill', 'bin_size': False}</field>
-        </record>
-    </data>
+    </record>
+    <record id="edu_skill_config_settings_action" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'edu_skill', 'bin_size': False}</field>
+    </record>
 </odoo>
-

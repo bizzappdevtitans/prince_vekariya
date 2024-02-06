@@ -1,7 +1,5 @@
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
-from datetime import date
-import random
 
 
 class CourseOrder(models.Model):
@@ -27,7 +25,7 @@ class CourseOrder(models.Model):
         null=False,
     )
     last_name = fields.Char(
-        string="Last Name",
+        string="Last Name :",
         tracking=True,
         required=True,
         size=16,
@@ -54,7 +52,7 @@ class CourseOrder(models.Model):
     def _check_name(self):
         for record in self:
             if record.first_name == record.last_name:
-                raise ValidationError("First Name and Last Name must be different")
+                raise ValidationError(_("First Name and Last Name must be different"))
 
     # Condition Check For Uniq Payment Id
     _sql_constraints = [

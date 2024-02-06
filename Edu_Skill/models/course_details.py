@@ -1,4 +1,4 @@
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -17,23 +17,23 @@ class CourseDetails(models.Model):
         "category.detail", ondelete="cascade", string="Category"
     )
     teacher_last_name = fields.Char(string="Last Name", related="teacher_id.last_name")
-    course_name = fields.Char(string="Course Name")
+    course_name = fields.Char(string="Course Name : ")
     course_upload_date = fields.Date(string="Upload Date", default=fields.Datetime.now)
-    description = fields.Html(string="Description")
+    description = fields.Html(string="Description : ")
 
     level = fields.Selection(
         [
             ("beginner", "Beginner"),
             ("intermediate", "Intermediate"),
         ],
-        string="Level",
+        string="Levels",
     )
 
     language = fields.Selection(
         [
             ("english", "English"),
         ],
-        string="Language",
+        string="Languages",
     )
     reference_no = fields.Char(
         string="Course Reference",
@@ -52,9 +52,9 @@ class CourseDetails(models.Model):
         string="Status",
         default="draft",
     )
-    video_count = fields.Integer(string="Video Count", compute="_compute_video_count")
+    video_count = fields.Integer(string="Video Counts", compute="_compute_video_count")
     price = fields.Integer(
-        "Price",
+        "Prices",
         null=False,
     )
     image = fields.Image(string="Course Image", required=True)
@@ -120,6 +120,10 @@ class CourseDetails(models.Model):
                 "course.detail"
             ) or _("New")
         res = super(CourseDetails, self).create(vals)
+        len_course_name = len(vals.get("course_name"))
+        check_len = int(self.env["ir.config_parameter"].get_param("allowed_course"))
+        if len_course_name <= check_len:
+            raise ValidationError(_("You cannot Add an Course."))
         return res
 
     # Using name_get method pass Course name and category_name and first_name

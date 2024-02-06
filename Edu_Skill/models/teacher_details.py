@@ -1,6 +1,7 @@
-from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
 from datetime import date
+
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class TeacherDetail(models.Model):
@@ -17,7 +18,7 @@ class TeacherDetail(models.Model):
         help="Enter  A First Name.",
     )
     last_name = fields.Char(
-        string="Last Name",
+        string="Last Name :",
         tracking=True,
         required=True,
         size=16,
@@ -28,18 +29,18 @@ class TeacherDetail(models.Model):
     )
     address = fields.Text(string="Address :", required=True)
     gender = fields.Selection(
-        [("Male", "Male"), ("Female", "Female")], string="Gender", required=True
+        [("Male", "Male"), ("Female", "Female")], string="Gender :", required=True
     )
-    active = fields.Boolean(string="Active", default=True)
+    active = fields.Boolean(string="Active :", default=True)
     birth_date = fields.Date(string="Birth Date :", required=True)
     email = fields.Char("Email :", required=True)
     phone_number = fields.Char("Phone Number :", required=True)
     course_count = fields.Integer(
-        string="Course Count", compute="_compute_course_count"
+        string="Course Counts", compute="_compute_course_count"
     )
     qualification = fields.Char(string="Qualification :", required=True)
     description = fields.Text(string="Description :", required=True)
-    image = fields.Image(string="Image")
+    image = fields.Image(string="Images")
     reference_no = fields.Char(
         string="Teacher Reference",
         required=True,
@@ -95,7 +96,7 @@ class TeacherDetail(models.Model):
     def _check_name(self):
         for record in self:
             if record.first_name == record.last_name:
-                raise ValidationError("First Name and Last Name must be different")
+                raise ValidationError(_("First Name and Last Name must be different"))
 
     # Condition Check for Database Unique Email Id
     _sql_constraints = [("email_uniqe", "unique(email)", "Email must be unique.")]

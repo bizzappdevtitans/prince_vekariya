@@ -1,4 +1,4 @@
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -8,17 +8,17 @@ class ReviewRattingDetails(models.Model):
     _description = "Review Ratting Detail"
     _rec_name = "course_name"
 
-    course_name = fields.Many2one("course.detail", string="Course Name")
+    course_name = fields.Many2one("course.detail", string="Course Names")
     user = fields.Many2one("user.detail", string="User Name")
-    subject = fields.Char("Subject")
-    review = fields.Text("Review")
+    subject = fields.Char("Subjects")
+    review = fields.Text("Reviews")
     reference_no = fields.Char(
         string="Category Order Reference",
         required=True,
         default=lambda self: _("New"),
     )
-    rating = fields.Float("Rating", required=True)
-    status = fields.Boolean("Status", default=True)
+    rating = fields.Float("Ratings", required=True)
+    status = fields.Boolean("Status : ", default=True)
     created_at = fields.Date("Date", default=fields.Datetime.now)
 
     # Condition Check For Subject And Review Must Be different
@@ -26,7 +26,7 @@ class ReviewRattingDetails(models.Model):
     def _check_name(self):
         for record in self:
             if record.subject == record.review:
-                raise ValidationError("Subject and Review must be different")
+                raise ValidationError(_("Subject and Review must be different"))
 
     # Generate Sequence Using Create ORM Method
     @api.model

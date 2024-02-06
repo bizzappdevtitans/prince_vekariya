@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="view_quiz_tree" model="ir.ui.view">
         <field name="name">quiz.detail.tree</field>
         <field name="model">quiz.detail</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="question"/>
-                <field name="right_answer"/>
+                <field name="question" />
+                <field name="right_answer" />
             </tree>
         </field>
     </record>
@@ -16,7 +16,7 @@
            <field name="code">order.detail</field>
            <field name="prefix">CO</field>
            <field name="padding">5</field>
-           <field name="company_id" eval="False"/>
+           <field name="company_id" eval="False" />
        </record>
     </data>
     <record id="view_quiz_form" model="ir.ui.view">
@@ -26,20 +26,20 @@
             <form>
                 <sheet>
                     <h1>
-                        <field name="reference_no"/>
+                        <field name="reference_no" />
                     </h1>
                     <group>
                         <group>
-                            <field name="question"/>
-                            <field name="option_1"/>
-                            <field name="option_3"/>
+                            <field name="question" />
+                            <field name="option_1" />
+                            <field name="option_3" />
                         </group>
                         <group>
-                            <field name="teacher_id"/>
-                            <field name="option_2"/>
-                            <field name="option_3"/>
-                            <field name="right_answer"/>
-                            <field name="verified" invisible="1"/>
+                            <field name="teacher_id" />
+                            <field name="option_2" />
+                            <field name="option_3" />
+                            <field name="right_answer" />
+                            <field name="verified" invisible="1" />
                         </group>
                     </group>
                 </sheet>
@@ -63,10 +63,14 @@
         <field name="model">quiz.detail</field>
         <field name="arch" type="xml">
             <search>
-                <field name="question"/>
-                <field name="course_id"/>
+                <field name="question" />
+                <field name="course_id" />
                 <group expand="0" string="Group By">
-                    <filter string="Gender" name="group_by_video" context="{'group_by':'course_id'}"/>
+                    <filter
+                        string="Gender"
+                        name="group_by_video"
+                        context="{'group_by':'course_id'}"
+                    />
                 </group>
             </search>
         </field>

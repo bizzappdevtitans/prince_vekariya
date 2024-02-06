@@ -1,20 +1,86 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 
-    <menuitem id="menu_root" name="Edu Skill" web_icon="Edu_Skill/static/description/icon.png" action="action_teacher_detail" sequence="0"/>
-    <menuitem id="menu_teacher" name="Teacher" parent="menu_root" action="action_teacher_detail" />
+    <menuitem
+        id="menu_root"
+        name="Edu Skill"
+        web_icon="Edu_Skill/static/description/icon.png"
+        action="action_teacher_detail"
+        sequence="0"
+    />
+    <menuitem
+        id="menu_teacher"
+        name="Teacher"
+        parent="menu_root"
+        action="action_teacher_detail"
+    />
 
-    <menuitem id="menu_category" name="Category" parent="menu_root" action="action_category_detail" />
+    <menuitem
+        id="menu_category"
+        name="Category"
+        parent="menu_root"
+        action="action_category_detail"
+    />
 
-    <menuitem  id="menu_course" name="Course" parent="menu_root" action="action_course_detail"/>
-    <menuitem  id="menu_video" name="Video" parent="menu_root" action="action_video_detail"/>
-    <menuitem  id="menu_user" name="User Details" parent="menu_root" action="action_user_detail"/>
-    <menuitem  id="menu_quiz" name="Quiz" parent="menu_root" action="action_quiz_detail"/>
-    <menuitem  id="menu_quiz_detail" name="Quiz Details" parent="menu_quiz" action="action_quiz_detail"/>
-    <menuitem  id="menu_quiz_result_detail" name="Quiz Result" parent="menu_quiz" action="action_quiz_result_detail"/>
-    <menuitem id="menu_order" name="Order" parent="menu_root"/>
-    <menuitem  id="menu_course_order_detail" name="Course Order" parent="menu_order" action="action_order_detail"/>
-    <menuitem  id="menu_course_order_item_detail" name="Course Item" parent="menu_order" action="action_order_item_detail"/>
-    <menuitem  id="menu_review_ratting_item_detail" name="Review" parent="menu_root" action="action_review_rating_detail"/>
-    <menuitem  id="edu_Skill_config_settings_menu" name="Settings" parent="menu_root" action="edu_skill_config_settings_action"/>
+    <menuitem
+        id="menu_course"
+        name="Course"
+        parent="menu_root"
+        action="action_course_detail"
+    />
+    <menuitem
+        id="menu_video"
+        name="Video"
+        parent="menu_root"
+        action="action_video_detail"
+    />
+    <menuitem
+        id="menu_user"
+        name="User Details"
+        parent="menu_root"
+        action="action_user_detail"
+    />
+    <menuitem
+        id="menu_quiz"
+        name="Quiz"
+        parent="menu_root"
+        action="action_quiz_detail"
+    />
+    <menuitem
+        id="menu_quiz_detail"
+        name="Quiz Details"
+        parent="menu_quiz"
+        action="action_quiz_detail"
+    />
+    <menuitem
+        id="menu_quiz_result_detail"
+        name="Quiz Result"
+        parent="menu_quiz"
+        action="action_quiz_result_detail"
+    />
+    <menuitem id="menu_order" name="Order" parent="menu_root" />
+    <menuitem
+        id="menu_course_order_detail"
+        name="Course Order"
+        parent="menu_order"
+        action="action_order_detail"
+    />
+    <menuitem
+        id="menu_course_order_item_detail"
+        name="Course Item"
+        parent="menu_order"
+        action="action_order_item_detail"
+    />
+    <menuitem
+        id="menu_review_ratting_item_detail"
+        name="Review"
+        parent="menu_root"
+        action="action_review_rating_detail"
+    />
+    <menuitem
+        id="edu_Skill_config_settings_menu"
+        name="Settings"
+        parent="menu_root"
+        action="edu_skill_config_settings_action"
+    />
 </odoo>

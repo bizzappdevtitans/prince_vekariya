@@ -1,5 +1,6 @@
-from odoo import api, fields, models, _
 from datetime import date
+
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -16,18 +17,21 @@ class UserDetail(models.Model):
         null=False,
     )
     last_name = fields.Char(
-        string="Last Name",
+        string="Last Name :",
         tracking=True,
         required=True,
         size=16,
     )
-    password = fields.Char(string="password", required=True)
-    age = fields.Integer(string="Age :", compute="_compute_age")
+    password = fields.Char(string="Passwords", required=True)
+    age = fields.Integer(
+        string="Age :",
+        # compute="_compute_age",
+    )
     address = fields.Text(string="Address :", required=True)
     gender = fields.Selection(
-        [("Male", "Male"), ("Female", "Female")], string="Gender", required=True
+        [("Male", "Male"), ("Female", "Female")], string="Gender : ", required=True
     )
-    active = fields.Boolean(string="Active", default=True)
+    active = fields.Boolean(string="Active :", default=True)
     birth_date = fields.Date(string="Birth Date :", required=True)
     email = fields.Char("Email :", required=True)
     phone_number = fields.Char("Phone Number :", required=True)
@@ -38,7 +42,7 @@ class UserDetail(models.Model):
             ("bachelor", "bachelor"),
             ("Master", "Master"),
         ],
-        string="Graduation",
+        string="Graduation :",
         required=True,
     )
     reference_no = fields.Char(
@@ -49,7 +53,7 @@ class UserDetail(models.Model):
     )
     qualification = fields.Char(string="Qualification :", required=True)
     description = fields.Text(string="Description :", required=True)
-    image = fields.Image(string="Image")
+    image = fields.Image(string="Images")
 
     @api.depends("birth_date")
     def _compute_age(self):
@@ -64,7 +68,7 @@ class UserDetail(models.Model):
     def _check_name(self):
         for record in self:
             if record.first_name == record.last_name:
-                raise ValidationError("First Name and Last Name must be different")
+                raise ValidationError(_("First Name and Last Name must be different"))
 
     _sql_constraints = [("email_uniqe", "unique(email)", "Email must be unique.")]
 
@@ -73,14 +77,14 @@ class UserDetail(models.Model):
     ]
 
     # Calculate Age Using Date Of Birth.
-    @api.onchange("birth_date")
-    def _compute_age(self):
-        for reference in self:
-            today = date.today()
-            if reference.birth_date:
-                reference.age = today.year - reference.birth_date.year
-            else:
-                reference.age = 1
+    # @api.onchange("birth_date")
+    # def _compute_age(self):
+    #     for reference in self:
+    #         today = date.today()
+    #         if reference.birth_date:
+    #             reference.age = today.year - reference.birth_date.year
+    #         else:
+    #             reference.age = 1
 
     # Generate Sequence Using Create ORM Method
     @api.model
@@ -132,9 +136,7 @@ class UserDetail(models.Model):
     def unlink(self):
         for states in self:
             if states.active not in ("False"):
-                raise ValidationError(
-                    _("You cannot delete an User which is Active. ")
-                )
+                raise ValidationError(_("You cannot delete an User which is Active. "))
         return super(UserDetail, self).unlink()
 
     # Using search_read method can Check active is Draft amd in False,True
@@ -145,6 +147,4 @@ class UserDetail(models.Model):
             ("active", "ilike", "False"),
             ("active", "ilike", "True"),
         ]
-        return super(UserDetail, self).search_read(
-            domain, fields, offset, limit, order
-        )
+        return super(UserDetail, self).search_read(domain, fields, offset, limit, order)

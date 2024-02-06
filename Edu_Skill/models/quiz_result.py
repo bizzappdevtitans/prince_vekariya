@@ -1,4 +1,4 @@
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -16,15 +16,15 @@ class QuizResult(models.Model):
         "user.detail", ondelete="cascade", string="User", required=True
     )
     user_last_name = fields.Char(string="Last Name", related="user_id.last_name")
-    total_right_answer = fields.Integer(string="Total Right Answer")
-    total_wrong_answer = fields.Integer(string="Total Wrong Answer")
+    total_right_answer = fields.Integer(string="Total Right Answers")
+    total_wrong_answer = fields.Integer(string="Total Wrong Answers")
     question = fields.Many2one(
-        "quiz.detail", string="Question", ondelete="cascade", required=True
+        "quiz.detail", string="Questions", ondelete="cascade", required=True
     )
-    user_input = fields.Char(string="User Input")
+    user_input = fields.Char(string="User Input : ")
     right_answer = fields.Char(string="Answer")
-    percentge = fields.Float("percentge", default=0.0)
-    verified = fields.Boolean(string="verified", default=False)
+    percentge = fields.Float("percentges", default=0.0)
+    verified = fields.Boolean(string="verifieds", default=False)
     reference_no = fields.Char(
         string="Quiz Result Reference",
         required=True,

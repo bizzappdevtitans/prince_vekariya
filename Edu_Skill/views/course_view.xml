@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record id="view_course_tree" model="ir.ui.view"> <!-- Creating Tree View -->
+    <record id="view_course_deatil_tree" model="ir.ui.view"> <!-- Creating Tree View -->
         <field name="name">course.detail.tree</field>
         <field name="model">course.detail</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="teacher_id" />
-                <field name="course_name"/>
-                <field name="category_id"/>
-                <field name="price"/>
-                <field name="activity_ids" widget="list_activity" optional="show"/>
+                <field name="course_name" />
+                <field name="category_id" />
+                <field name="price" />
+                <field name="activity_ids" widget="list_activity" optional="show" />
             </tree>
         </field>
     </record>
@@ -19,7 +19,7 @@
            <field name="code">course.detail</field>
            <field name="prefix">CD</field>
            <field name="padding">5</field>
-           <field name="company_id" eval="False"/>
+           <field name="company_id" eval="False" />
        </record>
     </data>
     <record id="action_course_detail" model="ir.actions.act_window">
@@ -41,43 +41,52 @@
             <form>
                 <sheet>
                     <h1>
-                        <field name="reference_no"/>
+                        <field name="reference_no" />
                     </h1>
                     <!-- Create a smart buttton -->
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_open_course" type="object" class="oe_stat_button" icon="fa-book" attrs="{'invisible': [('video_count', '=', 0)]}">
+                        <button
+                            name="action_open_course"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-book"
+                            attrs="{'invisible': [('video_count', '=', 0)]}"
+                        >
                             <div class="o_stat_info">
                                 <field name="video_count" class="oe_stat_value" />
                                 <span class="o_stat_text">Video</span>
                             </div>
                         </button>
                     </div>
-                    <field name="image" widget="image" class="oe_avatar"/>
+                    <field name="image" widget="image" class="oe_avatar" />
                     <group>
                         <group>
-                            <field name="teacher_id"/>
-                            <field name="category_id"/>
-                            <field name="course_upload_date"/>
-                            <field name="level"/>
-                            <field name="price"/>
+                            <field name="teacher_id" />
+                            <field name="category_id" />
+                            <field name="course_upload_date" />
+                            <field name="level" />
+                            <field name="price" />
                         </group>
                         <group>
                             <field name="teacher_last_name" />
-                            <field name="course_name"/>
-                            <field name="language"/>
-                            <field name="state"/>
+                            <field name="course_name" />
+                            <field name="language" />
+                            <field name="state" />
                         </group>
                     </group>
                     <notebook>
                         <page string="Description" name="description">
-                            <field name="description" placeholder="Enter Your Description" />
+                            <field
+                                name="description"
+                                placeholder="Enter Your Description"
+                            />
                         </page>
                     </notebook>
                 </sheet>
                 <div class="oe_chatter">
-                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="message_follower_ids" groups="base.group_user" />
                     <field name="activity_ids" />
-                    <field name="message_ids"/>
+                    <field name="message_ids" />
                 </div>
             </form>
         </field>
@@ -88,20 +97,41 @@
         <field name="model">course.detail</field>
         <field name="arch" type="xml">
             <search>
-                <field name="course_name"  />
-                <field name="teacher_id"/>
-                <field name="category_id"/>
-                <filter name="filter_category" string="Category" domain="[('category_id', '=','Web Devlopment')]"/>
-                <separator/>
+                <field name="course_name" />
+                <field name="teacher_id" />
+                <field name="category_id" />
+                <filter
+                    name="filter_category"
+                    string="Category"
+                    domain="[('category_id', '=','Web Devlopment')]"
+                />
+                <separator />
                 <group expand="0" string="Group By">
-                    <filter string="Category" name="group_by_category" context="{'group_by':'category_id'}"/>
+                    <filter
+                        string="Category"
+                        name="group_by_category"
+                        context="{'group_by':'category_id'}"
+                    />
 
-                    <filter string="Course Name" name="group_by_course_name" context="{'group_by':'course_name'}"/>
+                    <filter
+                        string="Course Name"
+                        name="group_by_course_name"
+                        context="{'group_by':'course_name'}"
+                    />
 
-                    <filter string="Teacher Name" name="group_by_teacher_name" context="{'group_by':'teacher_id'}"/>
+                    <filter
+                        string="Teacher Name"
+                        name="group_by_teacher_name"
+                        context="{'group_by':'teacher_id'}"
+                    />
                 </group>
                 <searchpanel>
-                    <field name="category_id" icon="fa-users" select="multi" enable_counters="1"/>
+                    <field
+                        name="category_id"
+                        icon="fa-users"
+                        select="multi"
+                        enable_counters="1"
+                    />
                 </searchpanel>
             </search>
         </field>

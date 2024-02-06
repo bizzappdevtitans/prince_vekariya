@@ -1,8 +1,8 @@
 {
-    "name": "edu_skill",
+    "name": "Edu Skill",
     "summary": """Provide online Education""",
-    "author": "bizzappdev",
-    "website": "http://www.bizzappdev.com",
+    "author": "Odoo Community Association (OCA)",
+    "website": "https://github.com/OCAoca/",
     "category": "Uncategorized",
     "version": "15.0.1.0.0",
     "depends": ["base", "mail"],
